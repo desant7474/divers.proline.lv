@@ -3,19 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Мои путешествия</title>
-  <meta name="description" content="Статический архив фотографий из поездок с локальным хранением в браузере." />
+  <title>Р В РЎС™Р В РЎвЂўР В РЎвЂ Р В РЎвЂ”Р РЋРЎвЂњР РЋРІР‚С™Р В Р’ВµР РЋРІвЂљВ¬Р В Р’ВµР РЋР С“Р РЋРІР‚С™Р В Р вЂ Р В РЎвЂР РЋР РЏ</title>
+  <meta name="description" content="Р В Р Р‹Р РЋРІР‚С™Р В Р’В°Р РЋРІР‚С™Р В РЎвЂР РЋРІР‚РЋР В Р’ВµР РЋР С“Р В РЎвЂќР В РЎвЂР В РІвЂћвЂ“ Р В Р’В°Р РЋР вЂљР РЋРІР‚В¦Р В РЎвЂР В Р вЂ  Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂўР В РЎвЂ“Р РЋР вЂљР В Р’В°Р РЋРІР‚С›Р В РЎвЂР В РІвЂћвЂ“ Р В РЎвЂР В Р’В· Р В РЎвЂ”Р В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂўР В РЎвЂќ Р РЋР С“ Р В Р’В»Р В РЎвЂўР В РЎвЂќР В Р’В°Р В Р’В»Р РЋР Р‰Р В Р вЂ¦Р РЋРІР‚в„–Р В РЎВ Р РЋРІР‚В¦Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р В Р’ВµР В Р вЂ¦Р В РЎвЂР В Р’ВµР В РЎВ Р В Р вЂ  Р В Р’В±Р РЋР вЂљР В Р’В°Р РЋРЎвЂњР В Р’В·Р В Р’ВµР РЋР вЂљР В Р’Вµ." />
   <style>
     :root {
-      --bg: #0f1317;
-      --panel: rgba(18, 24, 30, 0.84);
-      --panel-strong: #151b21;
-      --text: #eef3f1;
-      --muted: #9ea8a4;
-      --line: rgba(255,255,255,0.12);
-      --green: #4cc1a1;
-      --accent: #f08b6b;
-      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --bg: #08111f;
+      --bg-2: #0d1c2f;
+      --panel: rgba(11, 22, 37, 0.76);
+      --panel-strong: #10253b;
+      --text: #f5f8fb;
+      --muted: #a7b7c8;
+      --line: rgba(182, 213, 255, 0.14);
+      --green: #58d6c8;
+      --accent: #ffb86b;
+      --sky: #7dc8ff;
+      --shadow: 0 24px 70px rgba(0, 12, 26, 0.36);
+      --glow: 0 0 0 1px rgba(125, 200, 255, 0.08), 0 24px 90px rgba(0, 130, 255, 0.16);
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; min-height: 100%; }
@@ -23,10 +26,24 @@
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 18% 12%, rgba(76,193,161,0.18), transparent 24%),
-        radial-gradient(circle at 86% 10%, rgba(240,139,107,0.16), transparent 20%),
-        radial-gradient(circle at 55% 100%, rgba(102, 140, 255, 0.12), transparent 28%),
-        var(--bg);
+        radial-gradient(circle at 16% 10%, rgba(93, 182, 255, 0.20), transparent 22%),
+        radial-gradient(circle at 82% 12%, rgba(88, 214, 200, 0.14), transparent 20%),
+        radial-gradient(circle at 70% 82%, rgba(255, 184, 107, 0.12), transparent 25%),
+        linear-gradient(160deg, var(--bg), var(--bg-2));
+      background-attachment: fixed;
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at center, black 45%, transparent 100%);
+      opacity: 0.15;
     }
     img { max-width: 100%; display: block; }
     button, input, textarea { font: inherit; }
@@ -39,15 +56,38 @@
       align-items: start;
       padding: 16px 0 20px;
     }
-    .title { font-size: clamp(2.5rem, 5vw, 5.2rem); line-height: 0.98; margin: 12px 0 14px; letter-spacing: -0.05em; max-width: 10ch; }
-    .lead { max-width: 760px; color: var(--muted); line-height: 1.75; font-size: 1.02rem; }
+    .title { font-size: clamp(2.8rem, 5.4vw, 5.8rem); line-height: 0.94; margin: 12px 0 14px; letter-spacing: -0.06em; max-width: 11ch; }
+    .lead { max-width: 760px; color: var(--muted); line-height: 1.8; font-size: 1.02rem; }
+    .hero > div:first-child {
+      position: relative;
+      overflow: hidden;
+      padding: 20px 18px 22px;
+      border-radius: 30px;
+      background:
+        linear-gradient(135deg, rgba(18,35,57,0.78), rgba(10,21,35,0.42)),
+        radial-gradient(circle at 20% 0%, rgba(125,200,255,0.20), transparent 28%);
+      border: 1px solid rgba(182, 213, 255, 0.14);
+      box-shadow: var(--glow);
+      backdrop-filter: blur(18px);
+    }
+    .hero > div:first-child::after {
+      content: "";
+      position: absolute;
+      inset: auto -10% -35% auto;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(88,214,200,0.25), transparent 65%);
+      filter: blur(12px);
+      pointer-events: none;
+    }
     .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
-    .stat { background: rgba(255,255,255,0.04); border: 1px solid var(--line); padding: 16px; box-shadow: var(--shadow); backdrop-filter: blur(18px); border-radius: 18px; }
+    .stat { background: rgba(255,255,255,0.04); border: 1px solid var(--line); padding: 16px; box-shadow: var(--glow); backdrop-filter: blur(18px); border-radius: 18px; }
     .stat b { display: block; font-size: 1.9rem; margin-bottom: 4px; letter-spacing: -0.03em; }
     .panel {
-      background: var(--panel);
+      background: linear-gradient(180deg, rgba(17, 35, 56, 0.82), rgba(12, 25, 40, 0.76));
       border: 1px solid var(--line);
-      box-shadow: var(--shadow);
+      box-shadow: var(--glow);
       backdrop-filter: blur(18px);
       border-radius: 22px;
     }
@@ -57,11 +97,17 @@
     label { display: grid; gap: 6px; font-size: 0.9rem; font-weight: 700; }
     input, textarea {
       width: 100%;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(7, 11, 14, 0.65);
+      border: 1px solid rgba(182, 213, 255, 0.12);
+      background: rgba(4, 12, 21, 0.58);
       padding: 11px 12px;
       border-radius: 14px;
       color: var(--text);
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }
+    input:focus, textarea:focus {
+      border-color: rgba(125, 200, 255, 0.55);
+      box-shadow: 0 0 0 4px rgba(125, 200, 255, 0.12);
     }
     input::placeholder, textarea::placeholder { color: #77837f; }
     textarea { min-height: 92px; resize: vertical; }
@@ -76,9 +122,9 @@
       transition: transform 160ms ease, opacity 160ms ease, background-color 160ms ease, border-color 160ms ease;
     }
     .btn:hover { transform: translateY(-1px); }
-    .btn.primary { background: linear-gradient(135deg, #4cc1a1, #2c8f7d); color: #fff; }
-    .btn.secondary { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); color: var(--text); }
-    .btn.warn { background: linear-gradient(135deg, #f08b6b, #d95f4d); color: #fff; }
+    .btn.primary { background: linear-gradient(135deg, #58d6c8, #2f9ff0); color: #fff; box-shadow: 0 10px 30px rgba(47,159,240,0.25); }
+    .btn.secondary { background: rgba(255,255,255,0.05); border-color: rgba(182,213,255,0.14); color: var(--text); }
+    .btn.warn { background: linear-gradient(135deg, #ffb86b, #ff7b5f); color: #1a1208; }
     .toolbar {
       display: flex;
       gap: 10px;
@@ -132,18 +178,25 @@
       padding: 12px 0 2px;
     }
     .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .chip { padding: 10px 12px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: var(--text); }
-    .chip.active { background: var(--green); color: #081311; border-color: transparent; }
+    .chip { padding: 10px 12px; border: 1px solid rgba(182,213,255,0.14); background: rgba(255,255,255,0.05); color: var(--text); backdrop-filter: blur(12px); }
+    .chip.active { background: linear-gradient(135deg, var(--green), var(--sky)); color: #061316; border-color: transparent; box-shadow: 0 10px 26px rgba(88,214,200,0.18); }
     .gallery {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
       padding: 12px 0 28px;
     }
-    .card { overflow: hidden; background: var(--panel); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); backdrop-filter: blur(18px); }
-    .shot { aspect-ratio: 4 / 3; background: #1a2027; overflow: hidden; }
+    .card { overflow: hidden; background: linear-gradient(180deg, rgba(16, 32, 52, 0.84), rgba(10, 21, 35, 0.86)); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--glow); backdrop-filter: blur(18px); position: relative; }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent, rgba(125,200,255,0.04));
+      pointer-events: none;
+    }
+    .shot { aspect-ratio: 4 / 3; background: #0b1624; overflow: hidden; }
     .shot img { width: 100%; height: 100%; object-fit: cover; }
-    .card-body { padding: 16px; display: grid; gap: 12px; }
+    .card-body { padding: 16px; display: grid; gap: 12px; position: relative; }
     .card-head { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
     .card h3 { margin: 0; font-size: 1.08rem; letter-spacing: -0.02em; }
     .meta { color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
@@ -156,19 +209,21 @@
       align-items: center;
       padding: 22px;
       margin: 24px 0;
-      background: var(--panel);
+      background: linear-gradient(135deg, rgba(17,35,56,0.82), rgba(12,25,40,0.74));
       border: 1px solid var(--line);
       border-radius: 24px;
       backdrop-filter: blur(18px);
+      box-shadow: var(--glow);
     }
     .empty p { color: var(--muted); line-height: 1.7; }
     .modal {
       position: fixed;
       inset: 0;
-      background: rgba(3, 5, 7, 0.78);
+      background: rgba(2, 8, 16, 0.82);
       display: none;
       padding: 18px;
       z-index: 10;
+      backdrop-filter: blur(20px);
     }
     .modal.open { display: grid; }
     .modal-card {
@@ -178,12 +233,12 @@
       overflow: hidden;
       display: grid;
       grid-template-columns: minmax(0, 1fr) 320px;
-      background: #12181d;
-      border: 1px solid rgba(255,255,255,0.12);
+      background: linear-gradient(135deg, rgba(13,25,40,0.96), rgba(8,17,29,0.96));
+      border: 1px solid rgba(182,213,255,0.14);
       border-radius: 24px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--glow);
     }
-    .modal-visual { background: #000; min-height: 0; }
+    .modal-visual { background: #07111b; min-height: 0; }
     .modal-visual img { width: 100%; height: 100%; object-fit: contain; max-height: 90vh; }
     .modal-side { padding: 18px; overflow: auto; }
     .muted { color: var(--muted); }
@@ -208,57 +263,65 @@
   <div class="wrap">
     <section class="hero">
       <div>
-        <div class="muted" id="eyebrow" style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;">Личный архив</div>
-        <h1 class="title" id="pageTitle">Мои фотографии из путешествий</h1>
-        <p class="lead" id="leadText">Статическая версия архива для GitHub Pages: фотографии, поездки, места и заметки хранятся локально в браузере через `localStorage`. Всё открывается как обычный сайт без сервера.</p>
+        <div class="muted" id="eyebrow" style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;">Р В РІР‚С”Р В РЎвЂР РЋРІР‚РЋР В Р вЂ¦Р РЋРІР‚в„–Р В РІвЂћвЂ“ Р В Р’В°Р РЋР вЂљР РЋРІР‚В¦Р В РЎвЂР В Р вЂ </div>
+        <h1 class="title" id="pageTitle">Р В РЎС™Р В РЎвЂўР В РЎвЂ Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂўР В РЎвЂ“Р РЋР вЂљР В Р’В°Р РЋРІР‚С›Р В РЎвЂР В РЎвЂ Р В РЎвЂР В Р’В· Р В РЎвЂ”Р РЋРЎвЂњР РЋРІР‚С™Р В Р’ВµР РЋРІвЂљВ¬Р В Р’ВµР РЋР С“Р РЋРІР‚С™Р В Р вЂ Р В РЎвЂР В РІвЂћвЂ“</h1>
+        <p class="lead" id="leadText">Р В Р Р‹Р РЋРІР‚С™Р В Р’В°Р РЋРІР‚С™Р В РЎвЂР РЋРІР‚РЋР В Р’ВµР РЋР С“Р В РЎвЂќР В Р’В°Р РЋР РЏ Р В Р вЂ Р В Р’ВµР РЋР вЂљР РЋР С“Р В РЎвЂР РЋР РЏ Р В Р’В°Р РЋР вЂљР РЋРІР‚В¦Р В РЎвЂР В Р вЂ Р В Р’В° Р В РўвЂР В Р’В»Р РЋР РЏ GitHub Pages: Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂўР В РЎвЂ“Р РЋР вЂљР В Р’В°Р РЋРІР‚С›Р В РЎвЂР В РЎвЂ, Р В РЎвЂ”Р В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂќР В РЎвЂ, Р В РЎВР В Р’ВµР РЋР С“Р РЋРІР‚С™Р В Р’В° Р В РЎвЂ Р В Р’В·Р В Р’В°Р В РЎВР В Р’ВµР РЋРІР‚С™Р В РЎвЂќР В РЎвЂ Р РЋРІР‚В¦Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р РЋР РЏР РЋРІР‚С™Р РЋР С“Р РЋР РЏ Р В Р’В»Р В РЎвЂўР В РЎвЂќР В Р’В°Р В Р’В»Р РЋР Р‰Р В Р вЂ¦Р В РЎвЂў Р В Р вЂ  Р В Р’В±Р РЋР вЂљР В Р’В°Р РЋРЎвЂњР В Р’В·Р В Р’ВµР РЋР вЂљР В Р’Вµ Р РЋРІР‚РЋР В Р’ВµР РЋР вЂљР В Р’ВµР В Р’В· `localStorage`. Р В РІР‚в„ўР РЋР С“Р РЋРІР‚В Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂќР РЋР вЂљР РЋРІР‚в„–Р В Р вЂ Р В Р’В°Р В Р’ВµР РЋРІР‚С™Р РЋР С“Р РЋР РЏ Р В РЎвЂќР В Р’В°Р В РЎвЂќ Р В РЎвЂўР В Р’В±Р РЋРІР‚в„–Р РЋРІР‚РЋР В Р вЂ¦Р РЋРІР‚в„–Р В РІвЂћвЂ“ Р РЋР С“Р В Р’В°Р В РІвЂћвЂ“Р РЋРІР‚С™ Р В Р’В±Р В Р’ВµР В Р’В· Р РЋР С“Р В Р’ВµР РЋР вЂљР В Р вЂ Р В Р’ВµР РЋР вЂљР В Р’В°.</p>
         <div class="stats">
-          <div class="stat"><b id="countPhotos">0</b><span class="muted" id="photosLabel">фото</span></div>
-          <div class="stat"><b id="countTrips">0</b><span class="muted" id="tripsLabel">поездок</span></div>
-          <div class="stat"><b id="countPlaces">0</b><span class="muted" id="placesLabel">мест</span></div>
+          <div class="stat"><b id="countPhotos">0</b><span class="muted" id="photosLabel">Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂў</span></div>
+          <div class="stat"><b id="countTrips">0</b><span class="muted" id="tripsLabel">Р В РЎвЂ”Р В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂўР В РЎвЂќ</span></div>
+          <div class="stat"><b id="countPlaces">0</b><span class="muted" id="placesLabel">Р В РЎВР В Р’ВµР РЋР С“Р РЋРІР‚С™</span></div>
         </div>
       </div>
       <form class="panel form" id="form">
         <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px;">
-          <h2 id="formTitle" style="margin:0;">Добавить фото</h2>
+          <h2 id="formTitle" style="margin:0;">Р В РІР‚СњР В РЎвЂўР В Р’В±Р В Р’В°Р В Р вЂ Р В РЎвЂР РЋРІР‚С™Р РЋР Р‰ Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂў</h2>
           <div class="row" id="langSwitch"></div>
         </div>
         <div class="grid">
-          <label id="photoLabel">Фотография <input id="photo" type="file" accept="image/*" required></label>
-          <label id="titleLabel">Название <input id="title" placeholder="Закат в Лиссабоне"></label>
+          <label id="photoLabel">Р В Р’В¤Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂўР В РЎвЂ“Р РЋР вЂљР В Р’В°Р РЋРІР‚С›Р В РЎвЂР РЋР РЏ <input id="photo" type="file" accept="image/*" required></label>
+          <label id="titleLabel">Р В РЎСљР В Р’В°Р В Р’В·Р В Р вЂ Р В Р’В°Р В Р вЂ¦Р В РЎвЂР В Р’Вµ <input id="title" placeholder="Р В РІР‚вЂќР В Р’В°Р В РЎвЂќР В Р’В°Р РЋРІР‚С™ Р В Р вЂ  Р В РІР‚С”Р В РЎвЂР РЋР С“Р РЋР С“Р В Р’В°Р В Р’В±Р В РЎвЂўР В Р вЂ¦Р В Р’Вµ"></label>
           <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));">
-            <label id="tripLabel">Поездка <input id="trip" placeholder="Португалия"></label>
-            <label id="placeLabel">Место <input id="place" placeholder="Лиссабон"></label>
+            <label id="tripLabel">Р В РЎСџР В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂќР В Р’В° <input id="trip" placeholder="Р В РЎСџР В РЎвЂўР РЋР вЂљР РЋРІР‚С™Р РЋРЎвЂњР В РЎвЂ“Р В Р’В°Р В Р’В»Р В РЎвЂР РЋР РЏ"></label>
+            <label id="placeLabel">Р В РЎС™Р В Р’ВµР РЋР С“Р РЋРІР‚С™Р В РЎвЂў <input id="place" placeholder="Р В РІР‚С”Р В РЎвЂР РЋР С“Р РЋР С“Р В Р’В°Р В Р’В±Р В РЎвЂўР В Р вЂ¦"></label>
           </div>
-          <label id="dateLabel">Дата <input id="takenAt" type="date"></label>
-          <label id="noteLabel">Заметка <textarea id="note" placeholder="Что хочется вспомнить об этом кадре"></textarea></label>
-          <button class="btn primary" id="saveBtn" type="submit">Сохранить фото</button>
+          <label id="dateLabel">Р В РІР‚СњР В Р’В°Р РЋРІР‚С™Р В Р’В° <input id="takenAt" type="date"></label>
+          <label id="noteLabel">Р В РІР‚вЂќР В Р’В°Р В РЎВР В Р’ВµР РЋРІР‚С™Р В РЎвЂќР В Р’В° <textarea id="note" placeholder="Р В Р’В§Р РЋРІР‚С™Р В РЎвЂў Р РЋРІР‚В¦Р В РЎвЂўР РЋРІР‚РЋР В Р’ВµР РЋРІР‚С™Р РЋР С“Р РЋР РЏ Р В Р вЂ Р РЋР С“Р В РЎвЂ”Р В РЎвЂўР В РЎВР В Р вЂ¦Р В РЎвЂР РЋРІР‚С™Р РЋР Р‰ Р В РЎвЂўР В Р’В± Р РЋР РЉР РЋРІР‚С™Р В РЎвЂўР В РЎВ Р В РЎвЂќР В Р’В°Р В РўвЂР РЋР вЂљР В Р’Вµ"></textarea></label>
+          <button class="btn primary" id="saveBtn" type="submit">Р В Р Р‹Р В РЎвЂўР РЋРІР‚В¦Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р В РЎвЂР РЋРІР‚С™Р РЋР Р‰ Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂў</button>
         </div>
       </form>
     </section>
 
     <section class="toolbar">
-      <label class="search" id="searchLabel">Поиск
-        <input id="search" placeholder="Место, поездка или заметка">
+      <label class="search" id="searchLabel">Р В РЎСџР В РЎвЂўР В РЎвЂР РЋР С“Р В РЎвЂќ
+        <input id="search" placeholder="Р В РЎС™Р В Р’ВµР РЋР С“Р РЋРІР‚С™Р В РЎвЂў, Р В РЎвЂ”Р В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂќР В Р’В° Р В РЎвЂР В Р’В»Р В РЎвЂ Р В Р’В·Р В Р’В°Р В РЎВР В Р’ВµР РЋРІР‚С™Р В РЎвЂќР В Р’В°">
       </label>
-      <div class="chips" id="chips"></div>
+      <div class="row" style="justify-content:flex-end;">
+        <button class="btn secondary" id="exportBtn" type="button">Р В­Р С”РЎРѓР С—Р С•РЎР‚РЎвЂљ JSON</button>
+        <label class="btn secondary" style="position:relative;overflow:hidden;">
+          Р ВР СР С—Р С•РЎР‚РЎвЂљ JSON
+          <input id="importInput" type="file" accept="application/json" hidden>
+        </label>
+        <button class="btn warn" id="clearAllBtn" type="button">Р С›РЎвЂЎР С‘РЎРѓРЎвЂљР С‘РЎвЂљРЎРЉ Р В°РЎР‚РЎвЂ¦Р С‘Р Р†</button>
+      </div>
+      <div class="chips" id="chips" style="grid-column:1/-1;"></div>
     </section>
 
     <section class="navigator">
       <div class="navigator-head">
         <div>
-          <div class="muted" id="continentEyebrow" style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;">Навигация</div>
-          <h2 id="continentTitle" style="margin:10px 0 0;font-size:1.3rem;">Континенты и страны</h2>
+          <div class="muted" id="continentEyebrow" style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;">Р В РЎСљР В Р’В°Р В Р вЂ Р В РЎвЂР В РЎвЂ“Р В Р’В°Р РЋРІР‚В Р В РЎвЂР РЋР РЏ</div>
+          <h2 id="continentTitle" style="margin:10px 0 0;font-size:1.3rem;">Р В РЎв„ўР В РЎвЂўР В Р вЂ¦Р РЋРІР‚С™Р В РЎвЂР В Р вЂ¦Р В Р’ВµР В Р вЂ¦Р РЋРІР‚С™Р РЋРІР‚в„– Р В РЎвЂ Р РЋР С“Р РЋРІР‚С™Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р РЋРІР‚в„–</h2>
         </div>
       </div>
       <div class="navigator-grid">
         <div class="nav-panel">
-          <div class="nav-title" id="continentLabel">Континенты</div>
+          <div class="nav-title" id="continentLabel">Р В РЎв„ўР В РЎвЂўР В Р вЂ¦Р РЋРІР‚С™Р В РЎвЂР В Р вЂ¦Р В Р’ВµР В Р вЂ¦Р РЋРІР‚С™Р РЋРІР‚в„–</div>
           <div class="continent-list" id="continentList"></div>
         </div>
         <div class="nav-panel">
-          <div class="nav-title" id="countryLabel">Страны</div>
+          <div class="nav-title" id="countryLabel">Р В Р Р‹Р РЋРІР‚С™Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р РЋРІР‚в„–</div>
           <div class="country-list" id="countryList"></div>
-          <div class="country-placeholder" id="countryPlaceholder">Выберите континент, чтобы позже добавить сюда страны.</div>
+          <div class="country-placeholder" id="countryPlaceholder">Р В РІР‚в„ўР РЋРІР‚в„–Р В Р’В±Р В Р’ВµР РЋР вЂљР В РЎвЂР РЋРІР‚С™Р В Р’Вµ Р В РЎвЂќР В РЎвЂўР В Р вЂ¦Р РЋРІР‚С™Р В РЎвЂР В Р вЂ¦Р В Р’ВµР В Р вЂ¦Р РЋРІР‚С™, Р РЋРІР‚РЋР РЋРІР‚С™Р В РЎвЂўР В Р’В±Р РЋРІР‚в„– Р В РЎвЂ”Р В РЎвЂўР В Р’В·Р В Р’В¶Р В Р’Вµ Р В РўвЂР В РЎвЂўР В Р’В±Р В Р’В°Р В Р вЂ Р В РЎвЂР РЋРІР‚С™Р РЋР Р‰ Р РЋР С“Р РЋР вЂ№Р В РўвЂР В Р’В° Р РЋР С“Р РЋРІР‚С™Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р РЋРІР‚в„–.</div>
         </div>
       </div>
     </section>
@@ -267,10 +330,10 @@
 
     <section id="empty" class="empty hidden">
       <div>
-        <h2 id="emptyTitle" style="margin:0 0 12px;font-size:1.8rem;">Архив пока пуст</h2>
-        <p id="emptyText">Добавьте первый снимок, а потом собирайте поездки по местам, датам и коротким заметкам. Всё останется на этом устройстве.</p>
+        <h2 id="emptyTitle" style="margin:0 0 12px;font-size:1.8rem;">Р В РЎвЂ™Р РЋР вЂљР РЋРІР‚В¦Р В РЎвЂР В Р вЂ  Р В РЎвЂ”Р В РЎвЂўР В РЎвЂќР В Р’В° Р В РЎвЂ”Р РЋРЎвЂњР РЋР С“Р РЋРІР‚С™</h2>
+        <p id="emptyText">Р В РІР‚СњР В РЎвЂўР В Р’В±Р В Р’В°Р В Р вЂ Р РЋР Р‰Р РЋРІР‚С™Р В Р’Вµ Р В РЎвЂ”Р В Р’ВµР РЋР вЂљР В Р вЂ Р РЋРІР‚в„–Р В РІвЂћвЂ“ Р РЋР С“Р В Р вЂ¦Р В РЎвЂР В РЎВР В РЎвЂўР В РЎвЂќ, Р В Р’В° Р В РЎвЂ”Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂўР В РЎВ Р РЋР С“Р В РЎвЂўР В Р’В±Р В РЎвЂР РЋР вЂљР В Р’В°Р В РІвЂћвЂ“Р РЋРІР‚С™Р В Р’Вµ Р В РЎвЂ”Р В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂќР В РЎвЂ Р В РЎвЂ”Р В РЎвЂў Р В РЎВР В Р’ВµР РЋР С“Р РЋРІР‚С™Р В Р’В°Р В РЎВ, Р В РўвЂР В Р’В°Р РЋРІР‚С™Р В Р’В°Р В РЎВ Р В РЎвЂ Р В РЎвЂќР В РЎвЂўР РЋР вЂљР В РЎвЂўР РЋРІР‚С™Р В РЎвЂќР В РЎвЂР В РЎВ Р В Р’В·Р В Р’В°Р В РЎВР В Р’ВµР РЋРІР‚С™Р В РЎвЂќР В Р’В°Р В РЎВ. Р В РІР‚в„ўР РЋР С“Р РЋРІР‚В Р В РЎвЂўР РЋР С“Р РЋРІР‚С™Р В Р’В°Р В Р вЂ¦Р В Р’ВµР РЋРІР‚С™Р РЋР С“Р РЋР РЏ Р В Р вЂ¦Р В Р’В° Р РЋР РЉР РЋРІР‚С™Р В РЎвЂўР В РЎВ Р РЋРЎвЂњР РЋР С“Р РЋРІР‚С™Р РЋР вЂљР В РЎвЂўР В РІвЂћвЂ“Р РЋР С“Р РЋРІР‚С™Р В Р вЂ Р В Р’Вµ.</p>
       </div>
-      <img src="travel-collage.png" alt="Коллаж из фотографий путешествий">
+      <img src="travel-collage.png" alt="Р В РЎв„ўР В РЎвЂўР В Р’В»Р В Р’В»Р В Р’В°Р В Р’В¶ Р В РЎвЂР В Р’В· Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂўР В РЎвЂ“Р РЋР вЂљР В Р’В°Р РЋРІР‚С›Р В РЎвЂР В РІвЂћвЂ“ Р В РЎвЂ”Р РЋРЎвЂњР РЋРІР‚С™Р В Р’ВµР РЋРІвЂљВ¬Р В Р’ВµР РЋР С“Р РЋРІР‚С™Р В Р вЂ Р В РЎвЂР В РІвЂћвЂ“">
     </section>
 
     <section class="gallery" id="gallery"></section>
@@ -285,16 +348,16 @@
             <h2 id="modalTitle" style="margin:0 0 8px;font-size:1.6rem;"></h2>
             <div class="muted" id="modalDate"></div>
           </div>
-          <button class="btn secondary" id="closeModal" type="button">Закрыть</button>
+          <button class="btn secondary" id="closeModal" type="button">Р В РІР‚вЂќР В Р’В°Р В РЎвЂќР РЋР вЂљР РЋРІР‚в„–Р РЋРІР‚С™Р РЋР Р‰</button>
         </div>
         <div style="margin-top:18px;display:grid;gap:12px;font-size:0.95rem;">
-          <div><b id="modalTripLabel">Поездка</b><div class="muted" id="modalTrip"></div></div>
-          <div><b id="modalPlaceLabel">Место</b><div class="muted" id="modalPlace"></div></div>
-          <div><b id="modalNoteLabel">Заметка</b><div class="muted" id="modalNote" style="line-height:1.6;"></div></div>
+          <div><b id="modalTripLabel">Р В РЎСџР В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂќР В Р’В°</b><div class="muted" id="modalTrip"></div></div>
+          <div><b id="modalPlaceLabel">Р В РЎС™Р В Р’ВµР РЋР С“Р РЋРІР‚С™Р В РЎвЂў</b><div class="muted" id="modalPlace"></div></div>
+          <div><b id="modalNoteLabel">Р В РІР‚вЂќР В Р’В°Р В РЎВР В Р’ВµР РЋРІР‚С™Р В РЎвЂќР В Р’В°</b><div class="muted" id="modalNote" style="line-height:1.6;"></div></div>
         </div>
         <div class="row" style="margin-top:18px;">
-          <button class="btn primary" id="toggleFav" type="button">В избранное</button>
-          <button class="btn warn" id="deletePhoto" type="button">Удалить</button>
+          <button class="btn primary" id="toggleFav" type="button">Р В РІР‚в„ў Р В РЎвЂР В Р’В·Р В Р’В±Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р В Р вЂ¦Р В РЎвЂўР В Р’Вµ</button>
+          <button class="btn warn" id="deletePhoto" type="button">Р В Р в‚¬Р В РўвЂР В Р’В°Р В Р’В»Р В РЎвЂР РЋРІР‚С™Р РЋР Р‰</button>
         </div>
       </aside>
     </div>
@@ -303,49 +366,50 @@
   <script>
     const STORAGE_KEY = "travel-photo-vault-v1";
     const LANG_KEY = "travel-photo-vault-lang-v1";
+    const VIEW_KEY = "travel-photo-vault-view-v1";
     const translations = {
       ru: {
         langName: "RU",
-        eyebrow: "Личный архив",
-        title: "Мои фотографии из путешествий",
-        lead: "Статическая версия архива для GitHub Pages: фотографии, поездки, места и заметки хранятся локально в браузере через localStorage. Всё открывается как обычный сайт без сервера.",
-        photos: "фото",
-        trips: "поездок",
-        places: "мест",
-        formTitle: "Добавить фото",
-        navEyebrow: "Навигация",
-        navTitle: "Континенты и страны",
-        continents: "Континенты",
-        countries: "Страны",
-        countryHint: "Выберите континент, чтобы позже добавить сюда страны.",
-        photo: "Фотография",
-        titleLabel: "Название",
-        trip: "Поездка",
-        place: "Место",
-        date: "Дата",
-        note: "Заметка",
-        save: "Сохранить фото",
-        search: "Поиск",
-        searchPlaceholder: "Место, поездка или заметка",
-        emptyTitle: "Архив пока пуст",
-        emptyText: "Добавьте первый снимок, а потом собирайте поездки по местам, датам и коротким заметкам. Всё останется на этом устройстве.",
-        allTrips: "Все поездки",
-        favorites: "Избранное",
-        noResults: "Ничего не нашлось по текущему фильтру.",
-        close: "Закрыть",
-        modalTrip: "Поездка",
-        modalPlace: "Место",
-        modalNote: "Заметка",
-        favoriteOn: "В избранное",
-        favoriteOff: "Убрать из избранного",
-        delete: "Удалить",
-        placeNotSet: "Место не указано",
-        tripNotSet: "Не указана",
-        placeNotSetShort: "Не указано",
-        noteEmpty: "Без заметки",
-        dateEmpty: "Без даты",
-        uploadError: "Выберите фотографию.",
-        deleteConfirm: (title) => `Удалить «${title}» из архива?`,
+        eyebrow: "Р В РІР‚С”Р В РЎвЂР РЋРІР‚РЋР В Р вЂ¦Р РЋРІР‚в„–Р В РІвЂћвЂ“ Р В Р’В°Р РЋР вЂљР РЋРІР‚В¦Р В РЎвЂР В Р вЂ ",
+        title: "Р В РЎС™Р В РЎвЂўР В РЎвЂ Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂўР В РЎвЂ“Р РЋР вЂљР В Р’В°Р РЋРІР‚С›Р В РЎвЂР В РЎвЂ Р В РЎвЂР В Р’В· Р В РЎвЂ”Р РЋРЎвЂњР РЋРІР‚С™Р В Р’ВµР РЋРІвЂљВ¬Р В Р’ВµР РЋР С“Р РЋРІР‚С™Р В Р вЂ Р В РЎвЂР В РІвЂћвЂ“",
+        lead: "Р В Р Р‹Р РЋРІР‚С™Р В Р’В°Р РЋРІР‚С™Р В РЎвЂР РЋРІР‚РЋР В Р’ВµР РЋР С“Р В РЎвЂќР В Р’В°Р РЋР РЏ Р В Р вЂ Р В Р’ВµР РЋР вЂљР РЋР С“Р В РЎвЂР РЋР РЏ Р В Р’В°Р РЋР вЂљР РЋРІР‚В¦Р В РЎвЂР В Р вЂ Р В Р’В° Р В РўвЂР В Р’В»Р РЋР РЏ GitHub Pages: Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂўР В РЎвЂ“Р РЋР вЂљР В Р’В°Р РЋРІР‚С›Р В РЎвЂР В РЎвЂ, Р В РЎвЂ”Р В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂќР В РЎвЂ, Р В РЎВР В Р’ВµР РЋР С“Р РЋРІР‚С™Р В Р’В° Р В РЎвЂ Р В Р’В·Р В Р’В°Р В РЎВР В Р’ВµР РЋРІР‚С™Р В РЎвЂќР В РЎвЂ Р РЋРІР‚В¦Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р РЋР РЏР РЋРІР‚С™Р РЋР С“Р РЋР РЏ Р В Р’В»Р В РЎвЂўР В РЎвЂќР В Р’В°Р В Р’В»Р РЋР Р‰Р В Р вЂ¦Р В РЎвЂў Р В Р вЂ  Р В Р’В±Р РЋР вЂљР В Р’В°Р РЋРЎвЂњР В Р’В·Р В Р’ВµР РЋР вЂљР В Р’Вµ Р РЋРІР‚РЋР В Р’ВµР РЋР вЂљР В Р’ВµР В Р’В· localStorage. Р В РІР‚в„ўР РЋР С“Р РЋРІР‚В Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂќР РЋР вЂљР РЋРІР‚в„–Р В Р вЂ Р В Р’В°Р В Р’ВµР РЋРІР‚С™Р РЋР С“Р РЋР РЏ Р В РЎвЂќР В Р’В°Р В РЎвЂќ Р В РЎвЂўР В Р’В±Р РЋРІР‚в„–Р РЋРІР‚РЋР В Р вЂ¦Р РЋРІР‚в„–Р В РІвЂћвЂ“ Р РЋР С“Р В Р’В°Р В РІвЂћвЂ“Р РЋРІР‚С™ Р В Р’В±Р В Р’ВµР В Р’В· Р РЋР С“Р В Р’ВµР РЋР вЂљР В Р вЂ Р В Р’ВµР РЋР вЂљР В Р’В°.",
+        photos: "Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂў",
+        trips: "Р В РЎвЂ”Р В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂўР В РЎвЂќ",
+        places: "Р В РЎВР В Р’ВµР РЋР С“Р РЋРІР‚С™",
+        formTitle: "Р В РІР‚СњР В РЎвЂўР В Р’В±Р В Р’В°Р В Р вЂ Р В РЎвЂР РЋРІР‚С™Р РЋР Р‰ Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂў",
+        navEyebrow: "Р В РЎСљР В Р’В°Р В Р вЂ Р В РЎвЂР В РЎвЂ“Р В Р’В°Р РЋРІР‚В Р В РЎвЂР РЋР РЏ",
+        navTitle: "Р В РЎв„ўР В РЎвЂўР В Р вЂ¦Р РЋРІР‚С™Р В РЎвЂР В Р вЂ¦Р В Р’ВµР В Р вЂ¦Р РЋРІР‚С™Р РЋРІР‚в„– Р В РЎвЂ Р РЋР С“Р РЋРІР‚С™Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р РЋРІР‚в„–",
+        continents: "Р В РЎв„ўР В РЎвЂўР В Р вЂ¦Р РЋРІР‚С™Р В РЎвЂР В Р вЂ¦Р В Р’ВµР В Р вЂ¦Р РЋРІР‚С™Р РЋРІР‚в„–",
+        countries: "Р В Р Р‹Р РЋРІР‚С™Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р РЋРІР‚в„–",
+        countryHint: "Р В РІР‚в„ўР РЋРІР‚в„–Р В Р’В±Р В Р’ВµР РЋР вЂљР В РЎвЂР РЋРІР‚С™Р В Р’Вµ Р В РЎвЂќР В РЎвЂўР В Р вЂ¦Р РЋРІР‚С™Р В РЎвЂР В Р вЂ¦Р В Р’ВµР В Р вЂ¦Р РЋРІР‚С™, Р РЋРІР‚РЋР РЋРІР‚С™Р В РЎвЂўР В Р’В±Р РЋРІР‚в„– Р В РЎвЂ”Р В РЎвЂўР В Р’В·Р В Р’В¶Р В Р’Вµ Р В РўвЂР В РЎвЂўР В Р’В±Р В Р’В°Р В Р вЂ Р В РЎвЂР РЋРІР‚С™Р РЋР Р‰ Р РЋР С“Р РЋР вЂ№Р В РўвЂР В Р’В° Р РЋР С“Р РЋРІР‚С™Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р РЋРІР‚в„–.",
+        photo: "Р В Р’В¤Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂўР В РЎвЂ“Р РЋР вЂљР В Р’В°Р РЋРІР‚С›Р В РЎвЂР РЋР РЏ",
+        titleLabel: "Р В РЎСљР В Р’В°Р В Р’В·Р В Р вЂ Р В Р’В°Р В Р вЂ¦Р В РЎвЂР В Р’Вµ",
+        trip: "Р В РЎСџР В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂќР В Р’В°",
+        place: "Р В РЎС™Р В Р’ВµР РЋР С“Р РЋРІР‚С™Р В РЎвЂў",
+        date: "Р В РІР‚СњР В Р’В°Р РЋРІР‚С™Р В Р’В°",
+        note: "Р В РІР‚вЂќР В Р’В°Р В РЎВР В Р’ВµР РЋРІР‚С™Р В РЎвЂќР В Р’В°",
+        save: "Р В Р Р‹Р В РЎвЂўР РЋРІР‚В¦Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р В РЎвЂР РЋРІР‚С™Р РЋР Р‰ Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂў",
+        search: "Р В РЎСџР В РЎвЂўР В РЎвЂР РЋР С“Р В РЎвЂќ",
+        searchPlaceholder: "Р В РЎС™Р В Р’ВµР РЋР С“Р РЋРІР‚С™Р В РЎвЂў, Р В РЎвЂ”Р В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂќР В Р’В° Р В РЎвЂР В Р’В»Р В РЎвЂ Р В Р’В·Р В Р’В°Р В РЎВР В Р’ВµР РЋРІР‚С™Р В РЎвЂќР В Р’В°",
+        emptyTitle: "Р В РЎвЂ™Р РЋР вЂљР РЋРІР‚В¦Р В РЎвЂР В Р вЂ  Р В РЎвЂ”Р В РЎвЂўР В РЎвЂќР В Р’В° Р В РЎвЂ”Р РЋРЎвЂњР РЋР С“Р РЋРІР‚С™",
+        emptyText: "Р В РІР‚СњР В РЎвЂўР В Р’В±Р В Р’В°Р В Р вЂ Р РЋР Р‰Р РЋРІР‚С™Р В Р’Вµ Р В РЎвЂ”Р В Р’ВµР РЋР вЂљР В Р вЂ Р РЋРІР‚в„–Р В РІвЂћвЂ“ Р РЋР С“Р В Р вЂ¦Р В РЎвЂР В РЎВР В РЎвЂўР В РЎвЂќ, Р В Р’В° Р В РЎвЂ”Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂўР В РЎВ Р РЋР С“Р В РЎвЂўР В Р’В±Р В РЎвЂР РЋР вЂљР В Р’В°Р В РІвЂћвЂ“Р РЋРІР‚С™Р В Р’Вµ Р В РЎвЂ”Р В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂќР В РЎвЂ Р В РЎвЂ”Р В РЎвЂў Р В РЎВР В Р’ВµР РЋР С“Р РЋРІР‚С™Р В Р’В°Р В РЎВ, Р В РўвЂР В Р’В°Р РЋРІР‚С™Р В Р’В°Р В РЎВ Р В РЎвЂ Р В РЎвЂќР В РЎвЂўР РЋР вЂљР В РЎвЂўР РЋРІР‚С™Р В РЎвЂќР В РЎвЂР В РЎВ Р В Р’В·Р В Р’В°Р В РЎВР В Р’ВµР РЋРІР‚С™Р В РЎвЂќР В Р’В°Р В РЎВ. Р В РІР‚в„ўР РЋР С“Р РЋРІР‚В Р В РЎвЂўР РЋР С“Р РЋРІР‚С™Р В Р’В°Р В Р вЂ¦Р В Р’ВµР РЋРІР‚С™Р РЋР С“Р РЋР РЏ Р В Р вЂ¦Р В Р’В° Р РЋР РЉР РЋРІР‚С™Р В РЎвЂўР В РЎВ Р РЋРЎвЂњР РЋР С“Р РЋРІР‚С™Р РЋР вЂљР В РЎвЂўР В РІвЂћвЂ“Р РЋР С“Р РЋРІР‚С™Р В Р вЂ Р В Р’Вµ.",
+        allTrips: "Р В РІР‚в„ўР РЋР С“Р В Р’Вµ Р В РЎвЂ”Р В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂќР В РЎвЂ",
+        favorites: "Р В Р’ВР В Р’В·Р В Р’В±Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р В Р вЂ¦Р В РЎвЂўР В Р’Вµ",
+        noResults: "Р В РЎСљР В РЎвЂР РЋРІР‚РЋР В Р’ВµР В РЎвЂ“Р В РЎвЂў Р В Р вЂ¦Р В Р’Вµ Р В Р вЂ¦Р В Р’В°Р РЋРІвЂљВ¬Р В Р’В»Р В РЎвЂўР РЋР С“Р РЋР Р‰ Р В РЎвЂ”Р В РЎвЂў Р РЋРІР‚С™Р В Р’ВµР В РЎвЂќР РЋРЎвЂњР РЋРІР‚В°Р В Р’ВµР В РЎВР РЋРЎвЂњ Р РЋРІР‚С›Р В РЎвЂР В Р’В»Р РЋР Р‰Р РЋРІР‚С™Р РЋР вЂљР РЋРЎвЂњ.",
+        close: "Р В РІР‚вЂќР В Р’В°Р В РЎвЂќР РЋР вЂљР РЋРІР‚в„–Р РЋРІР‚С™Р РЋР Р‰",
+        modalTrip: "Р В РЎСџР В РЎвЂўР В Р’ВµР В Р’В·Р В РўвЂР В РЎвЂќР В Р’В°",
+        modalPlace: "Р В РЎС™Р В Р’ВµР РЋР С“Р РЋРІР‚С™Р В РЎвЂў",
+        modalNote: "Р В РІР‚вЂќР В Р’В°Р В РЎВР В Р’ВµР РЋРІР‚С™Р В РЎвЂќР В Р’В°",
+        favoriteOn: "Р В РІР‚в„ў Р В РЎвЂР В Р’В·Р В Р’В±Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р В Р вЂ¦Р В РЎвЂўР В Р’Вµ",
+        favoriteOff: "Р В Р в‚¬Р В Р’В±Р РЋР вЂљР В Р’В°Р РЋРІР‚С™Р РЋР Р‰ Р В РЎвЂР В Р’В· Р В РЎвЂР В Р’В·Р В Р’В±Р РЋР вЂљР В Р’В°Р В Р вЂ¦Р В Р вЂ¦Р В РЎвЂўР В РЎвЂ“Р В РЎвЂў",
+        delete: "Р В Р в‚¬Р В РўвЂР В Р’В°Р В Р’В»Р В РЎвЂР РЋРІР‚С™Р РЋР Р‰",
+        placeNotSet: "Р В РЎС™Р В Р’ВµР РЋР С“Р РЋРІР‚С™Р В РЎвЂў Р В Р вЂ¦Р В Р’Вµ Р РЋРЎвЂњР В РЎвЂќР В Р’В°Р В Р’В·Р В Р’В°Р В Р вЂ¦Р В РЎвЂў",
+        tripNotSet: "Р В РЎСљР В Р’Вµ Р РЋРЎвЂњР В РЎвЂќР В Р’В°Р В Р’В·Р В Р’В°Р В Р вЂ¦Р В Р’В°",
+        placeNotSetShort: "Р В РЎСљР В Р’Вµ Р РЋРЎвЂњР В РЎвЂќР В Р’В°Р В Р’В·Р В Р’В°Р В Р вЂ¦Р В РЎвЂў",
+        noteEmpty: "Р В РІР‚ВР В Р’ВµР В Р’В· Р В Р’В·Р В Р’В°Р В РЎВР В Р’ВµР РЋРІР‚С™Р В РЎвЂќР В РЎвЂ",
+        dateEmpty: "Р В РІР‚ВР В Р’ВµР В Р’В· Р В РўвЂР В Р’В°Р РЋРІР‚С™Р РЋРІР‚в„–",
+        uploadError: "Р В РІР‚в„ўР РЋРІР‚в„–Р В Р’В±Р В Р’ВµР РЋР вЂљР В РЎвЂР РЋРІР‚С™Р В Р’Вµ Р РЋРІР‚С›Р В РЎвЂўР РЋРІР‚С™Р В РЎвЂўР В РЎвЂ“Р РЋР вЂљР В Р’В°Р РЋРІР‚С›Р В РЎвЂР РЋР вЂ№.",
+        deleteConfirm: (title) => `Р В Р в‚¬Р В РўвЂР В Р’В°Р В Р’В»Р В РЎвЂР РЋРІР‚С™Р РЋР Р‰ Р вЂ™Р’В«${title}Р вЂ™Р’В» Р В РЎвЂР В Р’В· Р В Р’В°Р РЋР вЂљР РЋРІР‚В¦Р В РЎвЂР В Р вЂ Р В Р’В°?`,
         lang: { ru: "RU", en: "EN", lv: "LV" },
       },
       en: {
@@ -389,51 +453,51 @@
         noteEmpty: "No note",
         dateEmpty: "No date",
         uploadError: "Choose a photo.",
-        deleteConfirm: (title) => `Delete “${title}” from the archive?`,
+        deleteConfirm: (title) => `Delete Р Р†Р вЂљРЎС™${title}Р Р†Р вЂљРЎСљ from the archive?`,
         lang: { ru: "RU", en: "EN", lv: "LV" },
       },
       lv: {
         langName: "LV",
-        eyebrow: "Personīgais arhīvs",
-        title: "Manas ceļojumu fotogrāfijas",
-        lead: "Statiska arhīva versija GitHub Pages: fotogrāfijas, ceļojumi, vietas un piezīmes tiek glabātas lokāli pārlūkā ar localStorage. Atveras kā parasta vietne bez servera.",
+        eyebrow: "PersonР вЂќР’В«gais arhР вЂќР’В«vs",
+        title: "Manas ceР вЂќРЎВojumu fotogrР вЂќР С“fijas",
+        lead: "Statiska arhР вЂќР’В«va versija GitHub Pages: fotogrР вЂќР С“fijas, ceР вЂќРЎВojumi, vietas un piezР вЂќР’В«mes tiek glabР вЂќР С“tas lokР вЂќР С“li pР вЂќР С“rlР вЂўР’В«kР вЂќР С“ ar localStorage. Atveras kР вЂќР С“ parasta vietne bez servera.",
         photos: "foto",
-        trips: "ceļojumi",
+        trips: "ceР вЂќРЎВojumi",
         places: "vietas",
         formTitle: "Pievienot foto",
-        navEyebrow: "Navigācija",
+        navEyebrow: "NavigР вЂќР С“cija",
         navTitle: "Kontinenti un valstis",
         continents: "Kontinenti",
         countries: "Valstis",
-        countryHint: "Izvēlieties kontinentu, lai vēlāk šeit pievienotu valstis.",
-        photo: "Fotogrāfija",
+        countryHint: "IzvР вЂќРІР‚Сљlieties kontinentu, lai vР вЂќРІР‚СљlР вЂќР С“k Р вЂўР Р‹eit pievienotu valstis.",
+        photo: "FotogrР вЂќР С“fija",
         titleLabel: "Nosaukums",
-        trip: "Ceļojums",
+        trip: "CeР вЂќРЎВojums",
         place: "Vieta",
         date: "Datums",
-        note: "Piezīme",
-        save: "Saglabāt foto",
-        search: "Meklēt",
-        searchPlaceholder: "Vieta, ceļojums vai piezīme",
-        emptyTitle: "Arhīvs vēl ir tukšs",
-        emptyText: "Pievienojiet pirmo kadru, un pēc tam veidojiet ceļojumus pēc vietām, datumiem un mazām piezīmēm. Viss paliks šajā ierīcē.",
-        allTrips: "Visi ceļojumi",
+        note: "PiezР вЂќР’В«me",
+        save: "SaglabР вЂќР С“t foto",
+        search: "MeklР вЂќРІР‚Сљt",
+        searchPlaceholder: "Vieta, ceР вЂќРЎВojums vai piezР вЂќР’В«me",
+        emptyTitle: "ArhР вЂќР’В«vs vР вЂќРІР‚Сљl ir tukР вЂўР Р‹s",
+        emptyText: "Pievienojiet pirmo kadru, un pР вЂќРІР‚Сљc tam veidojiet ceР вЂќРЎВojumus pР вЂќРІР‚Сљc vietР вЂќР С“m, datumiem un mazР вЂќР С“m piezР вЂќР’В«mР вЂќРІР‚Сљm. Viss paliks Р вЂўР Р‹ajР вЂќР С“ ierР вЂќР’В«cР вЂќРІР‚Сљ.",
+        allTrips: "Visi ceР вЂќРЎВojumi",
         favorites: "Izlase",
-        noResults: "Pašreizējam filtram nekas neatbilda.",
-        close: "Aizvērt",
-        modalTrip: "Ceļojums",
+        noResults: "PaР вЂўР Р‹reizР вЂќРІР‚Сљjam filtram nekas neatbilda.",
+        close: "AizvР вЂќРІР‚Сљrt",
+        modalTrip: "CeР вЂќРЎВojums",
         modalPlace: "Vieta",
-        modalNote: "Piezīme",
+        modalNote: "PiezР вЂќР’В«me",
         favoriteOn: "Pievienot izlasei",
-        favoriteOff: "Noņemt no izlases",
-        delete: "Dzēst",
-        placeNotSet: "Vieta nav norādīta",
-        tripNotSet: "Nav norādīts",
-        placeNotSetShort: "Nav norādīts",
-        noteEmpty: "Nav piezīmes",
+        favoriteOff: "NoР вЂўРІР‚В emt no izlases",
+        delete: "DzР вЂќРІР‚Сљst",
+        placeNotSet: "Vieta nav norР вЂќР С“dР вЂќР’В«ta",
+        tripNotSet: "Nav norР вЂќР С“dР вЂќР’В«ts",
+        placeNotSetShort: "Nav norР вЂќР С“dР вЂќР’В«ts",
+        noteEmpty: "Nav piezР вЂќР’В«mes",
         dateEmpty: "Nav datuma",
-        uploadError: "Izvēlieties foto.",
-        deleteConfirm: (title) => `Dzēst “${title}” no arhīva?`,
+        uploadError: "IzvР вЂќРІР‚Сљlieties foto.",
+        deleteConfirm: (title) => `DzР вЂќРІР‚Сљst Р Р†Р вЂљРЎС™${title}Р Р†Р вЂљРЎСљ no arhР вЂќР’В«va?`,
         lang: { ru: "RU", en: "EN", lv: "LV" },
       },
     };
@@ -474,6 +538,9 @@
       closeModal: document.getElementById("closeModal"),
       toggleFav: document.getElementById("toggleFav"),
       deletePhoto: document.getElementById("deletePhoto"),
+      exportBtn: document.getElementById("exportBtn"),
+      importInput: document.getElementById("importInput"),
+      clearAllBtn: document.getElementById("clearAllBtn"),
       eyebrow: document.getElementById("eyebrow"),
       pageTitle: document.getElementById("pageTitle"),
       leadText: document.getElementById("leadText"),
@@ -504,13 +571,13 @@
       countryPlaceholder: document.getElementById("countryPlaceholder"),
     };
     const continents = [
-      { key: "Europe", ru: "Европа", en: "Europe", lv: "Eiropa" },
-      { key: "Asia", ru: "Азия", en: "Asia", lv: "Āzija" },
-      { key: "Africa", ru: "Африка", en: "Africa", lv: "Āfrika" },
-      { key: "NorthAmerica", ru: "Северная Америка", en: "North America", lv: "Ziemeļamerika" },
-      { key: "SouthAmerica", ru: "Южная Америка", en: "South America", lv: "Dienvidamerika" },
-      { key: "Oceania", ru: "Океания", en: "Oceania", lv: "Okeānija" },
-      { key: "Antarctica", ru: "Антарктида", en: "Antarctica", lv: "Antarktīda" },
+      { key: "Europe", ru: "Р В РІР‚СћР В Р вЂ Р РЋР вЂљР В РЎвЂўР В РЎвЂ”Р В Р’В°", en: "Europe", lv: "Eiropa" },
+      { key: "Asia", ru: "Р В РЎвЂ™Р В Р’В·Р В РЎвЂР РЋР РЏ", en: "Asia", lv: "Р вЂќР вЂљzija" },
+      { key: "Africa", ru: "Р В РЎвЂ™Р РЋРІР‚С›Р РЋР вЂљР В РЎвЂР В РЎвЂќР В Р’В°", en: "Africa", lv: "Р вЂќР вЂљfrika" },
+      { key: "NorthAmerica", ru: "Р В Р Р‹Р В Р’ВµР В Р вЂ Р В Р’ВµР РЋР вЂљР В Р вЂ¦Р В Р’В°Р РЋР РЏ Р В РЎвЂ™Р В РЎВР В Р’ВµР РЋР вЂљР В РЎвЂР В РЎвЂќР В Р’В°", en: "North America", lv: "ZiemeР вЂќРЎВamerika" },
+      { key: "SouthAmerica", ru: "Р В Р’В®Р В Р’В¶Р В Р вЂ¦Р В Р’В°Р РЋР РЏ Р В РЎвЂ™Р В РЎВР В Р’ВµР РЋР вЂљР В РЎвЂР В РЎвЂќР В Р’В°", en: "South America", lv: "Dienvidamerika" },
+      { key: "Oceania", ru: "Р В РЎвЂєР В РЎвЂќР В Р’ВµР В Р’В°Р В Р вЂ¦Р В РЎвЂР РЋР РЏ", en: "Oceania", lv: "OkeР вЂќР С“nija" },
+      { key: "Antarctica", ru: "Р В РЎвЂ™Р В Р вЂ¦Р РЋРІР‚С™Р В Р’В°Р РЋР вЂљР В РЎвЂќР РЋРІР‚С™Р В РЎвЂР В РўвЂР В Р’В°", en: "Antarctica", lv: "AntarktР вЂќР’В«da" },
     ];
     const countriesByContinent = {
       Europe: [],
@@ -528,10 +595,26 @@
       } catch {
         state.photos = [];
       }
+      try {
+        const view = JSON.parse(localStorage.getItem(VIEW_KEY) || "{}");
+        state.filter = view.filter || state.filter;
+        state.query = view.query || state.query;
+        state.continent = view.continent || state.continent;
+      } catch {
+        // Ignore malformed saved view state.
+      }
     }
 
     function save() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state.photos));
+    }
+
+    function saveView() {
+      localStorage.setItem(VIEW_KEY, JSON.stringify({
+        filter: state.filter,
+        query: state.query,
+        continent: state.continent,
+      }));
     }
 
     function showError(message) {
@@ -547,8 +630,8 @@
     }
 
     function formatSize(size) {
-      if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} КБ`;
-      return `${(size / 1024 / 1024).toFixed(1)} МБ`;
+      if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} Р В РЎв„ўР В РІР‚В`;
+      return `${(size / 1024 / 1024).toFixed(1)} Р В РЎС™Р В РІР‚В`;
     }
 
     function filteredPhotos() {
@@ -592,6 +675,7 @@
       els.continentList.querySelectorAll("button").forEach((btn) => {
         btn.addEventListener("click", () => {
           state.continent = btn.dataset.continent;
+          saveView();
           render();
         });
       });
@@ -688,12 +772,14 @@
         dataUrl,
       });
       save();
+      saveView();
       els.form.reset();
       render();
     });
 
     els.search.addEventListener("input", () => {
       state.query = els.search.value;
+      saveView();
       render();
     });
     els.closeModal.addEventListener("click", closeModal);
@@ -712,10 +798,47 @@
       const index = state.photos.findIndex((item) => item.id === state.selectedId);
       if (index < 0) return;
       const photo = state.photos[index];
-      if (!confirm(`Удалить «${photo.title}» из архива?`)) return;
+      if (!confirm(`Р В Р в‚¬Р В РўвЂР В Р’В°Р В Р’В»Р В РЎвЂР РЋРІР‚С™Р РЋР Р‰ Р вЂ™Р’В«${photo.title}Р вЂ™Р’В» Р В РЎвЂР В Р’В· Р В Р’В°Р РЋР вЂљР РЋРІР‚В¦Р В РЎвЂР В Р вЂ Р В Р’В°?`)) return;
       state.photos.splice(index, 1);
       save();
       closeModal();
+      render();
+    });
+    els.exportBtn.addEventListener("click", () => {
+      const payload = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        photos: state.photos,
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `travel-photo-vault-${new Date().toISOString().slice(0, 10)}.json`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+    els.importInput.addEventListener("change", async () => {
+      const file = els.importInput.files && els.importInput.files[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const parsed = JSON.parse(text);
+        const imported = Array.isArray(parsed) ? parsed : parsed.photos;
+        if (!Array.isArray(imported)) throw new Error("Invalid archive format");
+        state.photos = imported.filter((item) => item && item.dataUrl && item.title);
+        save();
+        render();
+      } catch {
+        showError("Р СњР Вµ РЎС“Р Т‘Р В°Р В»Р С•РЎРѓРЎРЉ Р С‘Р СР С—Р С•РЎР‚РЎвЂљР С‘РЎР‚Р С•Р Р†Р В°РЎвЂљРЎРЉ JSON.");
+      } finally {
+        els.importInput.value = "";
+      }
+    });
+    els.clearAllBtn.addEventListener("click", () => {
+      if (!confirm("Р С›РЎвЂЎР С‘РЎРѓРЎвЂљР С‘РЎвЂљРЎРЉ Р Р†Р ВµРЎРѓРЎРЉ Р В°РЎР‚РЎвЂ¦Р С‘Р Р†? Р В­РЎвЂљР С• Р Т‘Р ВµР в„–РЎРѓРЎвЂљР Р†Р С‘Р Вµ Р Р…Р ВµР В»РЎРЉР В·РЎРЏ Р С•РЎвЂљР СР ВµР Р…Р С‘РЎвЂљРЎРЉ.")) return;
+      state.photos = [];
+      save();
       render();
     });
     window.addEventListener("keydown", (event) => {
@@ -762,6 +885,7 @@
       els.continentLabel.textContent = t().continents;
       els.countryLabel.textContent = t().countries;
       renderContinentMenu();
+      saveView();
       render();
     }
 

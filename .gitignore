@@ -1,1 +1,10 @@
+# Local secrets
 GitHub token.zip
+*.env
+*.local
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
