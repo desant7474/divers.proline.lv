@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Travel Admin</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: rgba(12, 24, 39, 0.78);
+      --line: rgba(179, 213, 255, 0.16);
+      --text: #f4f8fb;
+      --muted: #9db0c3;
+      --accent: #61d9c9;
+      --sky: #6bb8ff;
+      --warn: #ffbb77;
+      --danger: #ff7c6d;
+      --shadow: 0 24px 80px rgba(0, 10, 24, 0.4);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(107,184,255,.18), transparent 22%),
+        radial-gradient(circle at 85% 15%, rgba(97,217,201,.16), transparent 20%),
+        linear-gradient(160deg, #08111f, #0c2034);
+    }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 24px; }
+    .hero { display: flex; justify-content: space-between; gap: 18px; align-items: end; margin-bottom: 18px; }
+    h1 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 4rem); letter-spacing: -0.05em; }
+    p { margin: 0; color: var(--muted); line-height: 1.7; }
+    .grid { display: grid; gap: 18px; grid-template-columns: 1.1fr 0.9fr; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); backdrop-filter: blur(18px); }
+    .panel .inner { padding: 18px; }
+    .drop {
+      border: 1.5px dashed rgba(179,213,255,.24);
+      border-radius: 20px;
+      padding: 18px;
+      min-height: 180px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      background: rgba(255,255,255,0.03);
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+    .drop.dragover { transform: scale(1.01); border-color: rgba(97,217,201,.6); background: rgba(97,217,201,.08); }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; }
+    button, input, textarea { font: inherit; }
+    button { border: 0; border-radius: 14px; cursor: pointer; padding: 12px 14px; font-weight: 700; }
+    input, textarea {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(179,213,255,.14);
+      background: rgba(3, 10, 18, 0.6);
+      color: var(--text);
+      padding: 11px 12px;
+    }
+    textarea { min-height: 88px; resize: vertical; }
+    input:focus, textarea:focus { outline: none; box-shadow: 0 0 0 4px rgba(107,184,255,.12); border-color: rgba(107,184,255,.6); }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), #ff8f6f); color: #16110a; }
+    .btn-secondary { background: rgba(255,255,255,.05); color: var(--text); border: 1px solid rgba(179,213,255,.16); }
+    .btn-sky { background: linear-gradient(135deg, var(--accent), var(--sky)); color: #06121b; }
+    .btn-danger { background: linear-gradient(135deg, #ff8a78, var(--danger)); color: #220a08; }
+    .photo-list { display: grid; gap: 12px; }
+    .item {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 100px minmax(0, 1fr) auto;
+      align-items: start;
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(179,213,255,.14);
+      background: rgba(255,255,255,.04);
+    }
+    .thumb { width: 100px; height: 76px; border-radius: 12px; object-fit: cover; background: #12243a; }
+    .meta { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+    .fields { display: grid; gap: 10px; }
+    .controls { display: flex; gap: 8px; flex-wrap: wrap; justify-content: end; }
+    .muted { color: var(--muted); }
+    .topline { display:flex; justify-content:space-between; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+    .badge { display:inline-flex; align-items:center; gap:8px; padding: 8px 10px; border-radius:999px; border:1px solid rgba(179,213,255,.16); background: rgba(255,255,255,.04); color: var(--muted); font-size: .9rem; }
+    .success { color: #bff6ea; }
+    .error { color: #ffcbc2; }
+    @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } .item { grid-template-columns: 84px 1fr; } .controls { grid-column: 1 / -1; justify-content: start; } }
+    @media (max-width: 640px) { .wrap { padding: 16px; } .hero { flex-direction: column; align-items: start; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <div class="badge">Backend upload panel</div>
+        <h1>Travel photo manager</h1>
+        <p>Upload several photos at once, edit title, date and place before saving, and store everything centrally so it is available from any device.</p>
+      </div>
+      <div class="row">
+        <a class="btn-secondary" href="/">Open gallery</a>
+        <button class="btn-sky" id="refreshBtn" type="button">Refresh</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="panel">
+        <div class="inner">
+          <div class="drop" id="dropzone">
+            <div>
+              <strong>Drop photos here</strong>
+              <div class="muted" style="margin-top:8px;">or select a batch with the button below</div>
+              <div style="margin-top:14px;">
+                <input id="files" type="file" accept="image/*" multiple>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:14px;" class="row">
+            <button class="btn-primary" id="saveBtn" type="button">Save batch</button>
+            <button class="btn-secondary" id="clearBtn" type="button">Clear batch</button>
+          </div>
+          <div id="status" class="meta" style="margin-top:12px;"></div>
+          <div class="photo-list" id="batchList" style="margin-top:18px;"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="inner">
+          <div class="topline">
+            <div>
+              <div class="badge">Stored photos</div>
+              <h2 style="margin:10px 0 0;">Edit existing records</h2>
+            </div>
+            <div class="meta" id="count"></div>
+          </div>
+          <div class="photo-list" id="storedList"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const els = {
+      files: document.getElementById('files'),
+      dropzone: document.getElementById('dropzone'),
+      batchList: document.getElementById('batchList'),
+      storedList: document.getElementById('storedList'),
+      saveBtn: document.getElementById('saveBtn'),
+      clearBtn: document.getElementById('clearBtn'),
+      refreshBtn: document.getElementById('refreshBtn'),
+      status: document.getElementById('status'),
+      count: document.getElementById('count'),
+    };
+
+    const batch = [];
+    let stored = [];
+
+    function escapeHtml(text) {
+      return String(text ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;');
+    }
+
+    function setStatus(message, cls = '') {
+      els.status.className = `meta ${cls}`;
+      els.status.textContent = message;
+    }
+
+    function readFile(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderBatch() {
+      els.batchList.innerHTML = batch.map((item, index) => `
+        <article class="item">
+          <img class="thumb" src="${item.dataUrl}" alt="">
+          <div class="fields">
+            <input data-index="${index}" data-field="title" value="${escapeHtml(item.title)}" placeholder="Title">
+            <div class="row">
+              <input data-index="${index}" data-field="date" type="date" value="${escapeHtml(item.date)}" style="max-width: 170px;">
+              <input data-index="${index}" data-field="place" value="${escapeHtml(item.place)}" placeholder="Place">
+            </div>
+            <textarea data-index="${index}" data-field="note" placeholder="Note">${escapeHtml(item.note)}</textarea>
+          </div>
+          <div class="controls">
+            <button class="btn-danger" data-remove="${index}" type="button">Remove</button>
+          </div>
+        </article>
+      `).join('') || '<div class="muted">No files in batch yet.</div>';
+    }
+
+    function renderStored() {
+      els.count.textContent = `${stored.length} photo${stored.length === 1 ? '' : 's'}`;
+      els.storedList.innerHTML = stored.map((item) => `
+        <article class="item">
+          <img class="thumb" src="${item.imageUrl}" alt="">
+          <div class="fields">
+            <input data-edit="${item.id}" data-field="title" value="${escapeHtml(item.title)}" placeholder="Title">
+            <div class="row">
+              <input data-edit="${item.id}" data-field="date" type="date" value="${escapeHtml(item.date)}" style="max-width: 170px;">
+              <input data-edit="${item.id}" data-field="place" value="${escapeHtml(item.place)}" placeholder="Place">
+            </div>
+            <textarea data-edit="${item.id}" data-field="note" placeholder="Note">${escapeHtml(item.note)}</textarea>
+            <div class="meta">${escapeHtml(item.imageUrl)}</div>
+          </div>
+          <div class="controls">
+            <button class="btn-secondary" data-save="${item.id}" type="button">Save</button>
+            <button class="btn-danger" data-delete="${item.id}" type="button">Delete</button>
+          </div>
+        </article>
+      `).join('') || '<div class="muted">No photos saved yet.</div>';
+    }
+
+    async function loadStored() {
+      const res = await fetch('/api/photos');
+      const data = await res.json();
+      stored = data.photos || [];
+      renderStored();
+    }
+
+    async function addFiles(files) {
+      const arr = Array.from(files || []);
+      if (!arr.length) return;
+      const items = await Promise.all(arr.map(async (file) => ({
+        dataUrl: await readFile(file),
+        title: file.name.replace(/\.[^.]+$/, ''),
+        date: '',
+        place: '',
+        note: '',
+      })));
+      batch.push(...items);
+      renderBatch();
+      setStatus(`${items.length} file(s) added to batch.`, 'success');
+    }
+
+    els.files.addEventListener('change', () => addFiles(els.files.files));
+    els.dropzone.addEventListener('dragover', (e) => { e.preventDefault(); els.dropzone.classList.add('dragover'); });
+    els.dropzone.addEventListener('dragleave', () => els.dropzone.classList.remove('dragover'));
+    els.dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      els.dropzone.classList.remove('dragover');
+      addFiles(e.dataTransfer.files);
+    });
+    els.batchList.addEventListener('input', (e) => {
+      const index = Number(e.target.dataset.index);
+      const field = e.target.dataset.field;
+      if (!Number.isInteger(index) || !field || !batch[index]) return;
+      batch[index][field] = e.target.value;
+    });
+    els.batchList.addEventListener('click', (e) => {
+      const index = Number(e.target.dataset.remove);
+      if (!Number.isInteger(index)) return;
+      batch.splice(index, 1);
+      renderBatch();
+    });
+    els.storedList.addEventListener('input', (e) => {
+      const id = e.target.dataset.edit;
+      const field = e.target.dataset.field;
+      if (!id || !field) return;
+      const item = stored.find((x) => x.id === id);
+      if (item) item[field] = e.target.value;
+    });
+    els.storedList.addEventListener('click', async (e) => {
+      const saveId = e.target.dataset.save;
+      const deleteId = e.target.dataset.delete;
+      if (saveId) {
+        const item = stored.find((x) => x.id === saveId);
+        if (!item) return;
+        const res = await fetch(`/api/photos/${saveId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: item.title, date: item.date, place: item.place, note: item.note }),
+        });
+        if (res.ok) {
+          setStatus('Saved.', 'success');
+          await loadStored();
+        } else {
+          setStatus('Save failed.', 'error');
+        }
+      }
+      if (deleteId) {
+        if (!confirm('Delete this photo?')) return;
+        const res = await fetch(`/api/photos/${deleteId}`, { method: 'DELETE' });
+        if (res.ok) {
+          setStatus('Deleted.', 'success');
+          await loadStored();
+        } else {
+          setStatus('Delete failed.', 'error');
+        }
+      }
+    });
+
+    els.saveBtn.addEventListener('click', async () => {
+      if (!batch.length) return setStatus('Add photos first.', 'error');
+      const res = await fetch('/api/photos/batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: batch }),
+      });
+      if (!res.ok) {
+        setStatus('Batch save failed.', 'error');
+        return;
+      }
+      const data = await res.json();
+      batch.length = 0;
+      renderBatch();
+      setStatus(`Saved ${data.photos?.length || 0} photo(s).`, 'success');
+      await loadStored();
+    });
+
+    els.clearBtn.addEventListener('click', () => {
+      batch.length = 0;
+      renderBatch();
+      setStatus('Batch cleared.', 'success');
+      els.files.value = '';
+    });
+    els.refreshBtn.addEventListener('click', loadStored);
+
+    renderBatch();
+    loadStored();
+  </script>
+</body>
+</html>
