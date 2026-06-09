@@ -4,7 +4,7 @@ const path = require('path');
 const url = require('url');
 
 const root = __dirname;
-const dataDir = path.join(root, 'data');
+const dataDir = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : path.join(root, 'data');
 const uploadsDir = path.join(dataDir, 'uploads');
 const photosDb = path.join(dataDir, 'photos.json');
 
