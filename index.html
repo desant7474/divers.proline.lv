@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Мои путешествия</title>
+  <meta name="description" content="Статический архив фотографий из поездок с локальным хранением в браузере." />
+  <style>
+    :root {
+      --bg: #0f1317;
+      --panel: rgba(18, 24, 30, 0.84);
+      --panel-strong: #151b21;
+      --text: #eef3f1;
+      --muted: #9ea8a4;
+      --line: rgba(255,255,255,0.12);
+      --green: #4cc1a1;
+      --accent: #f08b6b;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(76,193,161,0.18), transparent 24%),
+        radial-gradient(circle at 86% 10%, rgba(240,139,107,0.16), transparent 20%),
+        radial-gradient(circle at 55% 100%, rgba(102, 140, 255, 0.12), transparent 28%),
+        var(--bg);
+    }
+    img { max-width: 100%; display: block; }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; border-radius: 14px; border: 0; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 28px 20px 40px; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) 420px;
+      gap: 22px;
+      align-items: start;
+      padding: 16px 0 20px;
+    }
+    .title { font-size: clamp(2.5rem, 5vw, 5.2rem); line-height: 0.98; margin: 12px 0 14px; letter-spacing: -0.05em; max-width: 10ch; }
+    .lead { max-width: 760px; color: var(--muted); line-height: 1.75; font-size: 1.02rem; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
+    .stat { background: rgba(255,255,255,0.04); border: 1px solid var(--line); padding: 16px; box-shadow: var(--shadow); backdrop-filter: blur(18px); border-radius: 18px; }
+    .stat b { display: block; font-size: 1.9rem; margin-bottom: 4px; letter-spacing: -0.03em; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      border-radius: 22px;
+    }
+    .form { padding: 20px; }
+    .form h2, .section-title { margin: 0 0 14px; font-size: 1.05rem; }
+    .grid { display: grid; gap: 12px; }
+    label { display: grid; gap: 6px; font-size: 0.9rem; font-weight: 700; }
+    input, textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(7, 11, 14, 0.65);
+      padding: 11px 12px;
+      border-radius: 14px;
+      color: var(--text);
+    }
+    input::placeholder, textarea::placeholder { color: #77837f; }
+    textarea { min-height: 92px; resize: vertical; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 14px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      transition: transform 160ms ease, opacity 160ms ease, background-color 160ms ease, border-color 160ms ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.primary { background: linear-gradient(135deg, #4cc1a1, #2c8f7d); color: #fff; }
+    .btn.secondary { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); color: var(--text); }
+    .btn.warn { background: linear-gradient(135deg, #f08b6b, #d95f4d); color: #fff; }
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      padding: 18px 0;
+    }
+    .toolbar .search { max-width: 380px; width: 100%; }
+    .navigator {
+      display: grid;
+      gap: 10px;
+      padding: 4px 0 18px;
+    }
+    .navigator-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: end;
+      flex-wrap: wrap;
+    }
+    .navigator-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+    }
+    .nav-panel {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+    }
+    .nav-title {
+      margin: 0 0 10px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+    .continent-list, .country-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .country-placeholder {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      padding: 12px 0 2px;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { padding: 10px 12px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: var(--text); }
+    .chip.active { background: var(--green); color: #081311; border-color: transparent; }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      padding: 12px 0 28px;
+    }
+    .card { overflow: hidden; background: var(--panel); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); backdrop-filter: blur(18px); }
+    .shot { aspect-ratio: 4 / 3; background: #1a2027; overflow: hidden; }
+    .shot img { width: 100%; height: 100%; object-fit: cover; }
+    .card-body { padding: 16px; display: grid; gap: 12px; }
+    .card-head { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+    .card h3 { margin: 0; font-size: 1.08rem; letter-spacing: -0.02em; }
+    .meta { color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+    .note { color: #d5dbd8; line-height: 1.6; font-size: 0.92rem; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .empty {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 18px;
+      align-items: center;
+      padding: 22px;
+      margin: 24px 0;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      backdrop-filter: blur(18px);
+    }
+    .empty p { color: var(--muted); line-height: 1.7; }
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 5, 7, 0.78);
+      display: none;
+      padding: 18px;
+      z-index: 10;
+    }
+    .modal.open { display: grid; }
+    .modal-card {
+      margin: auto;
+      width: min(1100px, 100%);
+      max-height: 90vh;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      background: #12181d;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+    .modal-visual { background: #000; min-height: 0; }
+    .modal-visual img { width: 100%; height: 100%; object-fit: contain; max-height: 90vh; }
+    .modal-side { padding: 18px; overflow: auto; }
+    .muted { color: var(--muted); }
+    .error { margin-top: 16px; padding: 12px 14px; border: 1px solid rgba(240, 139, 107, 0.45); background: rgba(240, 139, 107, 0.12); color: #ffcfbf; border-radius: 16px; }
+    .hidden { display: none !important; }
+    #langSwitch { gap: 6px; }
+    #langSwitch .chip { min-width: 52px; }
+    @media (max-width: 1000px) {
+      .hero, .empty, .modal-card { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .wrap { padding: 16px; }
+      .gallery { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+      .toolbar { align-items: stretch; }
+      .toolbar .search { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <div class="muted" id="eyebrow" style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;">Личный архив</div>
+        <h1 class="title" id="pageTitle">Мои фотографии из путешествий</h1>
+        <p class="lead" id="leadText">Статическая версия архива для GitHub Pages: фотографии, поездки, места и заметки хранятся локально в браузере через `localStorage`. Всё открывается как обычный сайт без сервера.</p>
+        <div class="stats">
+          <div class="stat"><b id="countPhotos">0</b><span class="muted" id="photosLabel">фото</span></div>
+          <div class="stat"><b id="countTrips">0</b><span class="muted" id="tripsLabel">поездок</span></div>
+          <div class="stat"><b id="countPlaces">0</b><span class="muted" id="placesLabel">мест</span></div>
+        </div>
+      </div>
+      <form class="panel form" id="form">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px;">
+          <h2 id="formTitle" style="margin:0;">Добавить фото</h2>
+          <div class="row" id="langSwitch"></div>
+        </div>
+        <div class="grid">
+          <label id="photoLabel">Фотография <input id="photo" type="file" accept="image/*" required></label>
+          <label id="titleLabel">Название <input id="title" placeholder="Закат в Лиссабоне"></label>
+          <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));">
+            <label id="tripLabel">Поездка <input id="trip" placeholder="Португалия"></label>
+            <label id="placeLabel">Место <input id="place" placeholder="Лиссабон"></label>
+          </div>
+          <label id="dateLabel">Дата <input id="takenAt" type="date"></label>
+          <label id="noteLabel">Заметка <textarea id="note" placeholder="Что хочется вспомнить об этом кадре"></textarea></label>
+          <button class="btn primary" id="saveBtn" type="submit">Сохранить фото</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="toolbar">
+      <label class="search" id="searchLabel">Поиск
+        <input id="search" placeholder="Место, поездка или заметка">
+      </label>
+      <div class="chips" id="chips"></div>
+    </section>
+
+    <section class="navigator">
+      <div class="navigator-head">
+        <div>
+          <div class="muted" id="continentEyebrow" style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;">Навигация</div>
+          <h2 id="continentTitle" style="margin:10px 0 0;font-size:1.3rem;">Континенты и страны</h2>
+        </div>
+      </div>
+      <div class="navigator-grid">
+        <div class="nav-panel">
+          <div class="nav-title" id="continentLabel">Континенты</div>
+          <div class="continent-list" id="continentList"></div>
+        </div>
+        <div class="nav-panel">
+          <div class="nav-title" id="countryLabel">Страны</div>
+          <div class="country-list" id="countryList"></div>
+          <div class="country-placeholder" id="countryPlaceholder">Выберите континент, чтобы позже добавить сюда страны.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="error hidden" id="error"></div>
+
+    <section id="empty" class="empty hidden">
+      <div>
+        <h2 id="emptyTitle" style="margin:0 0 12px;font-size:1.8rem;">Архив пока пуст</h2>
+        <p id="emptyText">Добавьте первый снимок, а потом собирайте поездки по местам, датам и коротким заметкам. Всё останется на этом устройстве.</p>
+      </div>
+      <img src="travel-collage.png" alt="Коллаж из фотографий путешествий">
+    </section>
+
+    <section class="gallery" id="gallery"></section>
+  </div>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-visual"><img id="modalImg" alt=""></div>
+      <aside class="modal-side">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:start;">
+          <div>
+            <h2 id="modalTitle" style="margin:0 0 8px;font-size:1.6rem;"></h2>
+            <div class="muted" id="modalDate"></div>
+          </div>
+          <button class="btn secondary" id="closeModal" type="button">Закрыть</button>
+        </div>
+        <div style="margin-top:18px;display:grid;gap:12px;font-size:0.95rem;">
+          <div><b id="modalTripLabel">Поездка</b><div class="muted" id="modalTrip"></div></div>
+          <div><b id="modalPlaceLabel">Место</b><div class="muted" id="modalPlace"></div></div>
+          <div><b id="modalNoteLabel">Заметка</b><div class="muted" id="modalNote" style="line-height:1.6;"></div></div>
+        </div>
+        <div class="row" style="margin-top:18px;">
+          <button class="btn primary" id="toggleFav" type="button">В избранное</button>
+          <button class="btn warn" id="deletePhoto" type="button">Удалить</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "travel-photo-vault-v1";
+    const LANG_KEY = "travel-photo-vault-lang-v1";
+    const translations = {
+      ru: {
+        langName: "RU",
+        eyebrow: "Личный архив",
+        title: "Мои фотографии из путешествий",
+        lead: "Статическая версия архива для GitHub Pages: фотографии, поездки, места и заметки хранятся локально в браузере через localStorage. Всё открывается как обычный сайт без сервера.",
+        photos: "фото",
+        trips: "поездок",
+        places: "мест",
+        formTitle: "Добавить фото",
+        navEyebrow: "Навигация",
+        navTitle: "Континенты и страны",
+        continents: "Континенты",
+        countries: "Страны",
+        countryHint: "Выберите континент, чтобы позже добавить сюда страны.",
+        photo: "Фотография",
+        titleLabel: "Название",
+        trip: "Поездка",
+        place: "Место",
+        date: "Дата",
+        note: "Заметка",
+        save: "Сохранить фото",
+        search: "Поиск",
+        searchPlaceholder: "Место, поездка или заметка",
+        emptyTitle: "Архив пока пуст",
+        emptyText: "Добавьте первый снимок, а потом собирайте поездки по местам, датам и коротким заметкам. Всё останется на этом устройстве.",
+        allTrips: "Все поездки",
+        favorites: "Избранное",
+        noResults: "Ничего не нашлось по текущему фильтру.",
+        close: "Закрыть",
+        modalTrip: "Поездка",
+        modalPlace: "Место",
+        modalNote: "Заметка",
+        favoriteOn: "В избранное",
+        favoriteOff: "Убрать из избранного",
+        delete: "Удалить",
+        placeNotSet: "Место не указано",
+        tripNotSet: "Не указана",
+        placeNotSetShort: "Не указано",
+        noteEmpty: "Без заметки",
+        dateEmpty: "Без даты",
+        uploadError: "Выберите фотографию.",
+        deleteConfirm: (title) => `Удалить «${title}» из архива?`,
+        lang: { ru: "RU", en: "EN", lv: "LV" },
+      },
+      en: {
+        langName: "EN",
+        eyebrow: "Personal archive",
+        title: "My travel photos",
+        lead: "A static archive for GitHub Pages: photos, trips, places, and notes are stored locally in the browser with localStorage. It opens like a normal website, with no server required.",
+        photos: "photos",
+        trips: "trips",
+        places: "places",
+        formTitle: "Add photo",
+        navEyebrow: "Navigation",
+        navTitle: "Continents and countries",
+        continents: "Continents",
+        countries: "Countries",
+        countryHint: "Choose a continent to add countries here later.",
+        photo: "Photo",
+        titleLabel: "Title",
+        trip: "Trip",
+        place: "Place",
+        date: "Date",
+        note: "Note",
+        save: "Save photo",
+        search: "Search",
+        searchPlaceholder: "Place, trip, or note",
+        emptyTitle: "The archive is empty",
+        emptyText: "Add your first shot, then build trips by places, dates, and small notes. Everything stays on this device.",
+        allTrips: "All trips",
+        favorites: "Favorites",
+        noResults: "Nothing matched the current filter.",
+        close: "Close",
+        modalTrip: "Trip",
+        modalPlace: "Place",
+        modalNote: "Note",
+        favoriteOn: "Add to favorites",
+        favoriteOff: "Remove from favorites",
+        delete: "Delete",
+        placeNotSet: "Place not set",
+        tripNotSet: "Not set",
+        placeNotSetShort: "Not set",
+        noteEmpty: "No note",
+        dateEmpty: "No date",
+        uploadError: "Choose a photo.",
+        deleteConfirm: (title) => `Delete “${title}” from the archive?`,
+        lang: { ru: "RU", en: "EN", lv: "LV" },
+      },
+      lv: {
+        langName: "LV",
+        eyebrow: "Personīgais arhīvs",
+        title: "Manas ceļojumu fotogrāfijas",
+        lead: "Statiska arhīva versija GitHub Pages: fotogrāfijas, ceļojumi, vietas un piezīmes tiek glabātas lokāli pārlūkā ar localStorage. Atveras kā parasta vietne bez servera.",
+        photos: "foto",
+        trips: "ceļojumi",
+        places: "vietas",
+        formTitle: "Pievienot foto",
+        navEyebrow: "Navigācija",
+        navTitle: "Kontinenti un valstis",
+        continents: "Kontinenti",
+        countries: "Valstis",
+        countryHint: "Izvēlieties kontinentu, lai vēlāk šeit pievienotu valstis.",
+        photo: "Fotogrāfija",
+        titleLabel: "Nosaukums",
+        trip: "Ceļojums",
+        place: "Vieta",
+        date: "Datums",
+        note: "Piezīme",
+        save: "Saglabāt foto",
+        search: "Meklēt",
+        searchPlaceholder: "Vieta, ceļojums vai piezīme",
+        emptyTitle: "Arhīvs vēl ir tukšs",
+        emptyText: "Pievienojiet pirmo kadru, un pēc tam veidojiet ceļojumus pēc vietām, datumiem un mazām piezīmēm. Viss paliks šajā ierīcē.",
+        allTrips: "Visi ceļojumi",
+        favorites: "Izlase",
+        noResults: "Pašreizējam filtram nekas neatbilda.",
+        close: "Aizvērt",
+        modalTrip: "Ceļojums",
+        modalPlace: "Vieta",
+        modalNote: "Piezīme",
+        favoriteOn: "Pievienot izlasei",
+        favoriteOff: "Noņemt no izlases",
+        delete: "Dzēst",
+        placeNotSet: "Vieta nav norādīta",
+        tripNotSet: "Nav norādīts",
+        placeNotSetShort: "Nav norādīts",
+        noteEmpty: "Nav piezīmes",
+        dateEmpty: "Nav datuma",
+        uploadError: "Izvēlieties foto.",
+        deleteConfirm: (title) => `Dzēst “${title}” no arhīva?`,
+        lang: { ru: "RU", en: "EN", lv: "LV" },
+      },
+    };
+    const state = {
+      photos: [],
+      filter: "all",
+      query: "",
+      selectedId: null,
+      lang: localStorage.getItem(LANG_KEY) || "ru",
+      continent: "Europe",
+    };
+
+    const t = () => translations[state.lang];
+
+    const els = {
+      form: document.getElementById("form"),
+      photo: document.getElementById("photo"),
+      title: document.getElementById("title"),
+      trip: document.getElementById("trip"),
+      place: document.getElementById("place"),
+      takenAt: document.getElementById("takenAt"),
+      note: document.getElementById("note"),
+      search: document.getElementById("search"),
+      chips: document.getElementById("chips"),
+      gallery: document.getElementById("gallery"),
+      empty: document.getElementById("empty"),
+      error: document.getElementById("error"),
+      countPhotos: document.getElementById("countPhotos"),
+      countTrips: document.getElementById("countTrips"),
+      countPlaces: document.getElementById("countPlaces"),
+      modal: document.getElementById("modal"),
+      modalImg: document.getElementById("modalImg"),
+      modalTitle: document.getElementById("modalTitle"),
+      modalDate: document.getElementById("modalDate"),
+      modalTrip: document.getElementById("modalTrip"),
+      modalPlace: document.getElementById("modalPlace"),
+      modalNote: document.getElementById("modalNote"),
+      closeModal: document.getElementById("closeModal"),
+      toggleFav: document.getElementById("toggleFav"),
+      deletePhoto: document.getElementById("deletePhoto"),
+      eyebrow: document.getElementById("eyebrow"),
+      pageTitle: document.getElementById("pageTitle"),
+      leadText: document.getElementById("leadText"),
+      photosLabel: document.getElementById("photosLabel"),
+      tripsLabel: document.getElementById("tripsLabel"),
+      placesLabel: document.getElementById("placesLabel"),
+      formTitle: document.getElementById("formTitle"),
+      photoLabel: document.getElementById("photoLabel"),
+      titleLabel: document.getElementById("titleLabel"),
+      tripLabel: document.getElementById("tripLabel"),
+      placeLabel: document.getElementById("placeLabel"),
+      dateLabel: document.getElementById("dateLabel"),
+      noteLabel: document.getElementById("noteLabel"),
+      saveBtn: document.getElementById("saveBtn"),
+      searchLabel: document.getElementById("searchLabel"),
+      emptyTitle: document.getElementById("emptyTitle"),
+      emptyText: document.getElementById("emptyText"),
+      modalTripLabel: document.getElementById("modalTripLabel"),
+      modalPlaceLabel: document.getElementById("modalPlaceLabel"),
+      modalNoteLabel: document.getElementById("modalNoteLabel"),
+      langSwitch: document.getElementById("langSwitch"),
+      continentEyebrow: document.getElementById("continentEyebrow"),
+      continentTitle: document.getElementById("continentTitle"),
+      continentLabel: document.getElementById("continentLabel"),
+      countryLabel: document.getElementById("countryLabel"),
+      continentList: document.getElementById("continentList"),
+      countryList: document.getElementById("countryList"),
+      countryPlaceholder: document.getElementById("countryPlaceholder"),
+    };
+    const continents = [
+      { key: "Europe", ru: "Европа", en: "Europe", lv: "Eiropa" },
+      { key: "Asia", ru: "Азия", en: "Asia", lv: "Āzija" },
+      { key: "Africa", ru: "Африка", en: "Africa", lv: "Āfrika" },
+      { key: "NorthAmerica", ru: "Северная Америка", en: "North America", lv: "Ziemeļamerika" },
+      { key: "SouthAmerica", ru: "Южная Америка", en: "South America", lv: "Dienvidamerika" },
+      { key: "Oceania", ru: "Океания", en: "Oceania", lv: "Okeānija" },
+      { key: "Antarctica", ru: "Антарктида", en: "Antarctica", lv: "Antarktīda" },
+    ];
+    const countriesByContinent = {
+      Europe: [],
+      Asia: [],
+      Africa: [],
+      NorthAmerica: [],
+      SouthAmerica: [],
+      Oceania: [],
+      Antarctica: [],
+    };
+
+    function load() {
+      try {
+        state.photos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      } catch {
+        state.photos = [];
+      }
+    }
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.photos));
+    }
+
+    function showError(message) {
+      els.error.textContent = message;
+      els.error.classList.remove("hidden");
+      setTimeout(() => els.error.classList.add("hidden"), 2600);
+    }
+
+    function formatDate(value) {
+      if (!value) return t().dateEmpty;
+      const locale = state.lang === "ru" ? "ru-RU" : state.lang === "lv" ? "lv-LV" : "en-US";
+      return new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric" }).format(new Date(value));
+    }
+
+    function formatSize(size) {
+      if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} КБ`;
+      return `${(size / 1024 / 1024).toFixed(1)} МБ`;
+    }
+
+    function filteredPhotos() {
+      const q = state.query.trim().toLowerCase();
+      return state.photos.filter((photo) => {
+        const byTrip =
+          state.filter === "all" ||
+          (state.filter === "favorites" && photo.favorite) ||
+          photo.trip === state.filter;
+        const hay = [photo.title, photo.trip, photo.place, photo.note].join(" ").toLowerCase();
+        return byTrip && (!q || hay.includes(q));
+      });
+    }
+
+    function renderChips() {
+      const trips = Array.from(new Set(state.photos.map((p) => p.trip).filter(Boolean))).sort((a, b) => a.localeCompare(b, "ru"));
+      const chips = [
+        { key: "all", label: t().allTrips },
+        { key: "favorites", label: t().favorites },
+        ...trips.map((trip) => ({ key: trip, label: trip })),
+      ];
+      els.chips.innerHTML = chips.map((chip) => `<button class="chip ${state.filter === chip.key ? "active" : ""}" data-trip="${chip.key}" type="button">${chip.label}</button>`).join("");
+      els.chips.querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => { state.filter = btn.dataset.trip; render(); });
+      });
+    }
+
+    function renderStats() {
+      els.countPhotos.textContent = state.photos.length;
+      els.countTrips.textContent = new Set(state.photos.map((p) => p.trip).filter(Boolean)).size;
+      els.countPlaces.textContent = new Set(state.photos.map((p) => p.place).filter(Boolean)).size;
+    }
+
+    function renderContinentMenu() {
+      const labels = {
+        ru: (item) => item.ru,
+        en: (item) => item.en,
+        lv: (item) => item.lv,
+      };
+      els.continentList.innerHTML = continents.map((item) => `<button class="chip ${state.continent === item.key ? "active" : ""}" data-continent="${item.key}" type="button">${labels[state.lang](item)}</button>`).join("");
+      els.continentList.querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.continent = btn.dataset.continent;
+          render();
+        });
+      });
+
+      const countries = countriesByContinent[state.continent] || [];
+      els.countryList.innerHTML = countries.length
+        ? countries.map((country) => `<button class="chip" type="button">${country}</button>`).join("")
+        : "";
+      els.countryPlaceholder.classList.toggle("hidden", countries.length > 0);
+      els.countryPlaceholder.textContent = t().countryHint;
+    }
+
+    function openModal(photo) {
+      state.selectedId = photo.id;
+      els.modal.classList.add("open");
+      els.modal.setAttribute("aria-hidden", "false");
+      els.modalImg.src = photo.dataUrl;
+      els.modalImg.alt = photo.title;
+      els.modalTitle.textContent = photo.title;
+      els.modalDate.textContent = formatDate(photo.takenAt);
+      els.modalTrip.textContent = photo.trip || t().tripNotSet;
+      els.modalPlace.textContent = photo.place || t().placeNotSetShort;
+      els.modalNote.textContent = photo.note || t().noteEmpty;
+      els.toggleFav.textContent = photo.favorite ? t().favoriteOff : t().favoriteOn;
+    }
+
+    function closeModal() {
+      state.selectedId = null;
+      els.modal.classList.remove("open");
+      els.modal.setAttribute("aria-hidden", "true");
+    }
+
+    function render() {
+      renderStats();
+      renderChips();
+
+      const list = filteredPhotos();
+      els.gallery.innerHTML = "";
+      els.empty.classList.toggle("hidden", state.photos.length !== 0);
+      if (list.length === 0 && state.photos.length > 0) {
+        els.gallery.innerHTML = `<div class="panel" style="padding:18px;grid-column:1/-1;">${t().noResults}</div>`;
+        return;
+      }
+
+      list.forEach((photo) => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <button type="button" class="shot"><img src="${photo.dataUrl}" alt="${photo.title}"></button>
+          <div class="card-body">
+            <div class="card-head">
+              <div>
+                <h3>${photo.title}</h3>
+                <div class="meta">${[photo.place, photo.trip].filter(Boolean).join(", ") || t().placeNotSet}</div>
+              </div>
+              <button class="chip ${photo.favorite ? "active" : ""}" type="button">${photo.favorite ? t().favorites : t().favoriteOn}</button>
+            </div>
+            <div class="meta" style="display:flex;justify-content:space-between;gap:8px;">
+              <span>${formatDate(photo.takenAt)}</span><span>${formatSize(photo.size)}</span>
+            </div>
+            ${photo.note ? `<div class="note">${photo.note}</div>` : ""}
+          </div>
+        `;
+        card.querySelector(".shot").addEventListener("click", () => openModal(photo));
+        card.querySelector(".chip").addEventListener("click", () => {
+          photo.favorite = !photo.favorite;
+          save();
+          render();
+          if (state.selectedId === photo.id) openModal(photo);
+        });
+        els.gallery.appendChild(card);
+      });
+    }
+
+    els.form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const file = els.photo.files && els.photo.files[0];
+      if (!file) return showError(t().uploadError);
+      const dataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      state.photos.unshift({
+        id: crypto.randomUUID(),
+        title: els.title.value.trim() || file.name.replace(/\.[^.]+$/, ""),
+        trip: els.trip.value.trim(),
+        place: els.place.value.trim(),
+        takenAt: els.takenAt.value,
+        note: els.note.value.trim(),
+        size: file.size,
+        favorite: false,
+        dataUrl,
+      });
+      save();
+      els.form.reset();
+      render();
+    });
+
+    els.search.addEventListener("input", () => {
+      state.query = els.search.value;
+      render();
+    });
+    els.closeModal.addEventListener("click", closeModal);
+    els.modal.addEventListener("click", (event) => {
+      if (event.target === els.modal) closeModal();
+    });
+    els.toggleFav.addEventListener("click", () => {
+      const photo = state.photos.find((item) => item.id === state.selectedId);
+      if (!photo) return;
+      photo.favorite = !photo.favorite;
+      save();
+      render();
+      openModal(photo);
+    });
+    els.deletePhoto.addEventListener("click", () => {
+      const index = state.photos.findIndex((item) => item.id === state.selectedId);
+      if (index < 0) return;
+      const photo = state.photos[index];
+      if (!confirm(`Удалить «${photo.title}» из архива?`)) return;
+      state.photos.splice(index, 1);
+      save();
+      closeModal();
+      render();
+    });
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeModal();
+    });
+
+    function setLanguage(lang) {
+      state.lang = lang;
+      localStorage.setItem(LANG_KEY, lang);
+      document.documentElement.lang = lang;
+      document.title = translations[lang].title;
+      els.eyebrow.textContent = t().eyebrow;
+      els.pageTitle.textContent = t().title;
+      els.leadText.textContent = t().lead;
+      els.photosLabel.textContent = t().photos;
+      els.tripsLabel.textContent = t().trips;
+      els.placesLabel.textContent = t().places;
+      els.formTitle.textContent = t().formTitle;
+      els.photoLabel.childNodes[0].textContent = `${t().photo} `;
+      els.titleLabel.childNodes[0].textContent = `${t().titleLabel} `;
+      els.tripLabel.childNodes[0].textContent = `${t().trip} `;
+      els.placeLabel.childNodes[0].textContent = `${t().place} `;
+      els.dateLabel.childNodes[0].textContent = `${t().date} `;
+      els.noteLabel.childNodes[0].textContent = `${t().note} `;
+      els.saveBtn.textContent = t().save;
+      els.searchLabel.childNodes[0].textContent = `${t().search} `;
+      els.search.placeholder = t().searchPlaceholder;
+      els.emptyTitle.textContent = t().emptyTitle;
+      els.emptyText.textContent = t().emptyText;
+      els.modalTripLabel.textContent = t().modalTrip;
+      els.modalPlaceLabel.textContent = t().modalPlace;
+      els.modalNoteLabel.textContent = t().modalNote;
+      els.closeModal.textContent = t().close;
+      els.toggleFav.textContent = state.selectedId ? (state.photos.find((p) => p.id === state.selectedId)?.favorite ? t().favoriteOff : t().favoriteOn) : t().favoriteOn;
+      els.deletePhoto.textContent = t().delete;
+      els.langSwitch.innerHTML = Object.entries(t().lang).map(([code, label]) => `<button type="button" class="chip ${state.lang === code ? "active" : ""}" data-lang="${code}">${label}</button>`).join("");
+      els.langSwitch.querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          setLanguage(btn.dataset.lang);
+        });
+      });
+      els.continentEyebrow.textContent = t().navEyebrow;
+      els.continentTitle.textContent = t().navTitle;
+      els.continentLabel.textContent = t().continents;
+      els.countryLabel.textContent = t().countries;
+      renderContinentMenu();
+      render();
+    }
+
+    load();
+    setLanguage(state.lang);
+  </script>
+</body>
+</html>
