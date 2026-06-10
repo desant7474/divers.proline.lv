@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Divers Proline LV</title>
-  <meta name="description" content="Архив подводных поездок, фотографий и заметок Divers Proline LV." />
+  <meta name="description" content="An archive of dive trips, photos, and notes for Divers Proline LV." />
   <style>
     :root{
       --bg:#07111a;
@@ -55,93 +55,200 @@
     .tags{display:flex;flex-wrap:wrap;gap:8px}
     .tag{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:.82rem}
     .footer{margin-top:22px;padding:18px;color:var(--muted);line-height:1.7}
+    .langbar{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-bottom:12px}
     @media (max-width:960px){.hero,.grid{grid-template-columns:1fr}}
     @media (max-width:640px){.wrap{padding:16px}.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.search{max-width:none;width:100%}}
   </style>
 </head>
 <body>
   <main class="wrap">
+    <div class="langbar">
+      <button class="chip active" id="langEn" type="button">EN</button>
+      <button class="chip" id="langRu" type="button">RU</button>
+    </div>
+
     <section class="hero">
       <div>
-        <div class="eyebrow">Divers Proline LV</div>
-        <h1 class="title">Подводные поездки, фото и заметки</h1>
-        <p class="lead">Это чистая UTF-8 версия проекта. Здесь собраны фотографии, короткие описания и тематические подборки, чтобы сайт нормально открывался в браузере и на GitHub Pages без кракозябр.</p>
+        <div class="eyebrow" id="eyebrow">Divers Proline LV</div>
+        <h1 class="title" id="title">Dive trips, photos, and notes</h1>
+        <p class="lead" id="lead">
+          A clean bilingual archive for dive trips and photo notes. English is the primary language, with Russian available as a second language.
+        </p>
       </div>
       <aside class="panel hero-card">
         <div class="photo">
-          <img src="travel-collage.png" alt="Подборка фотографий из путешествий" />
+          <img src="travel-collage.png" alt="Collage of travel photos" />
         </div>
         <div class="stats">
-          <div class="stat"><b>24</b><span class="muted">снимка</span></div>
-          <div class="stat"><b>8</b><span class="muted">маршрутов</span></div>
-          <div class="stat"><b>14</b><span class="muted">локаций</span></div>
+          <div class="stat"><b>24</b><span class="muted" id="statPhotos">photos</span></div>
+          <div class="stat"><b>8</b><span class="muted" id="statTrips">trips</span></div>
+          <div class="stat"><b>14</b><span class="muted" id="statPlaces">places</span></div>
         </div>
       </aside>
     </section>
 
     <section class="toolbar">
       <div class="chips" id="chips">
-        <button class="chip active" data-filter="all">Все</button>
-        <button class="chip" data-filter="sea">Море</button>
-        <button class="chip" data-filter="lake">Озёра</button>
-        <button class="chip" data-filter="trip">Поездки</button>
+        <button class="chip active" data-filter="all" type="button">All</button>
+        <button class="chip" data-filter="sea" type="button">Sea</button>
+        <button class="chip" data-filter="lake" type="button">Lakes</button>
+        <button class="chip" data-filter="trip" type="button">Trips</button>
       </div>
-      <input class="search" id="search" type="search" placeholder="Поиск по заметкам" />
+      <input class="search" id="search" type="search" placeholder="Search notes" />
     </section>
 
     <section class="grid" id="grid">
-      <article class="panel card" data-type="sea trip" data-text="Балтика, вечер, экипировка, выход в воду">
-        <div class="shot"><img src="travel-collage.png" alt="Балтийский дайв" /></div>
+      <article class="panel card" data-type="sea trip" data-en="Baltic evening dive, gear check, sunset water entry" data-ru="Вечерний выход к Балтике, проверка оборудования, вход в воду на закате">
+        <div class="shot"><img src="travel-collage.png" alt="Baltic dive" /></div>
         <div class="card-body">
-          <h2>Балтийский выход</h2>
-          <div class="meta">Вечерний выход к воде, проверка оборудования и быстрый дайв перед закатом.</div>
+          <h2 class="card-title">Baltic Evening Dive</h2>
+          <div class="meta card-meta">Evening water entry, gear check, and a short dive before sunset.</div>
           <div class="tags"><span class="tag">sea</span><span class="tag">trip</span></div>
         </div>
       </article>
-      <article class="panel card" data-type="lake" data-text="Карьер, прозрачная вода, тренировка">
-        <div class="shot"><img src="travel-collage.png" alt="Озёрная тренировка" /></div>
+      <article class="panel card" data-type="lake" data-en="Quiet quarry training, clear water, route practice" data-ru="Тренировка на карьере, прозрачная вода, отработка маршрута">
+        <div class="shot"><img src="travel-collage.png" alt="Lake training" /></div>
         <div class="card-body">
-          <h2>Озёрная тренировка</h2>
-          <div class="meta">Спокойная вода, отработка навыков и фотофиксация маршрута для архива.</div>
+          <h2 class="card-title">Lake Training Session</h2>
+          <div class="meta card-meta">Quiet water, skills practice, and route notes for the archive.</div>
           <div class="tags"><span class="tag">lake</span></div>
         </div>
       </article>
-      <article class="panel card" data-type="trip sea" data-text="Команда, дорога, архив, лето">
-        <div class="shot"><img src="travel-collage.png" alt="Командная поездка" /></div>
+      <article class="panel card" data-type="trip sea" data-en="Team road trip, archive, summer collection" data-ru="Командная поездка, архив, летняя подборка">
+        <div class="shot"><img src="travel-collage.png" alt="Team trip" /></div>
         <div class="card-body">
-          <h2>Командная поездка</h2>
-          <div class="meta">Полевой выезд с остановками, заметками и подборкой лучших кадров для сайта.</div>
+          <h2 class="card-title">Team Road Trip</h2>
+          <div class="meta card-meta">Field trip with stops, notes, and the best shots from the road.</div>
           <div class="tags"><span class="tag">trip</span><span class="tag">sea</span></div>
         </div>
       </article>
     </section>
 
-    <section class="panel footer">
-      Если хочешь, я могу дальше восстановить точную структуру исходного проекта, когда ты пришлёшь полный архив или исходники. Сейчас страница сохранена в нормальном UTF-8.
+    <section class="panel footer" id="footer">
+      If you want, I can restore the exact structure of the original project later. For now the site is bilingual, with English as the default and Russian as the second language.
     </section>
   </main>
 
   <script>
-    const chips = document.querySelectorAll('#chips .chip');
-    const cards = [...document.querySelectorAll('.card')];
-    const search = document.getElementById('search');
+    const copy = {
+      en: {
+        lang: "en",
+        eyebrow: "Divers Proline LV",
+        title: "Dive trips, photos, and notes",
+        lead: "A clean bilingual archive for dive trips and photo notes. English is the primary language, with Russian available as a second language.",
+        photos: "photos",
+        trips: "trips",
+        places: "places",
+        search: "Search notes",
+        all: "All",
+        sea: "Sea",
+        lake: "Lakes",
+        trip: "Trips",
+        card1Title: "Baltic Evening Dive",
+        card1Meta: "Evening water entry, gear check, and a short dive before sunset.",
+        card2Title: "Lake Training Session",
+        card2Meta: "Quiet water, skills practice, and route notes for the archive.",
+        card3Title: "Team Road Trip",
+        card3Meta: "Field trip with stops, notes, and the best shots from the road.",
+        footer: "If you want, I can restore the exact structure of the original project later. For now the site is bilingual, with English as the default and Russian as the second language.",
+        placeholder: "Search notes"
+      },
+      ru: {
+        lang: "ru",
+        eyebrow: "Divers Proline LV",
+        title: "Погружения, поездки и заметки",
+        lead: "Аккуратный двуязычный архив для дайв-поездок и фото-заметок. Основной язык сайта — английский, второй язык — русский.",
+        photos: "фото",
+        trips: "поездок",
+        places: "локаций",
+        search: "Поиск по заметкам",
+        all: "Все",
+        sea: "Море",
+        lake: "Озёра",
+        trip: "Поездки",
+        card1Title: "Вечерний выход к Балтике",
+        card1Meta: "Вход в воду на закате, проверка оборудования и короткое погружение.",
+        card2Title: "Тренировка на озере",
+        card2Meta: "Спокойная вода, отработка навыков и заметки по маршруту для архива.",
+        card3Title: "Командная поездка",
+        card3Meta: "Полевой выезд с остановками, заметками и лучшими кадрами по дороге.",
+        footer: "Если хочешь, я могу потом восстановить точную структуру исходного проекта. Сейчас сайт двуязычный: английский основной, русский второй.",
+        placeholder: "Поиск по заметкам"
+      }
+    };
+
+    const els = {
+      langEn: document.getElementById("langEn"),
+      langRu: document.getElementById("langRu"),
+      eyebrow: document.getElementById("eyebrow"),
+      title: document.getElementById("title"),
+      lead: document.getElementById("lead"),
+      statPhotos: document.getElementById("statPhotos"),
+      statTrips: document.getElementById("statTrips"),
+      statPlaces: document.getElementById("statPlaces"),
+      search: document.getElementById("search"),
+      chips: document.getElementById("chips"),
+      footer: document.getElementById("footer"),
+      cards: [...document.querySelectorAll(".card")],
+      cardTitles: [...document.querySelectorAll(".card-title")],
+      cardMetas: [...document.querySelectorAll(".card-meta")]
+    };
+
+    let lang = "en";
+
+    function setLang(next) {
+      lang = next;
+      const t = copy[lang];
+      document.documentElement.lang = lang;
+      document.title = "Divers Proline LV";
+      els.eyebrow.textContent = t.eyebrow;
+      els.title.textContent = t.title;
+      els.lead.textContent = t.lead;
+      els.statPhotos.textContent = t.photos;
+      els.statTrips.textContent = t.trips;
+      els.statPlaces.textContent = t.places;
+      els.search.placeholder = t.placeholder;
+      els.footer.textContent = t.footer;
+      els.langEn.classList.toggle("active", lang === "en");
+      els.langRu.classList.toggle("active", lang === "ru");
+
+      const chips = els.chips.querySelectorAll(".chip");
+      chips[0].textContent = t.all;
+      chips[1].textContent = t.sea;
+      chips[2].textContent = t.lake;
+      chips[3].textContent = t.trip;
+
+      els.cardTitles[0].textContent = t.card1Title;
+      els.cardMetas[0].textContent = t.card1Meta;
+      els.cardTitles[1].textContent = t.card2Title;
+      els.cardMetas[1].textContent = t.card2Meta;
+      els.cardTitles[2].textContent = t.card3Title;
+      els.cardMetas[2].textContent = t.card3Meta;
+      applyFilters();
+    }
 
     function applyFilters() {
-      const active = document.querySelector('#chips .chip.active')?.dataset.filter || 'all';
-      const term = search.value.trim().toLowerCase();
-      cards.forEach(card => {
-        const matchType = active === 'all' || card.dataset.type.includes(active);
-        const matchTerm = !term || card.dataset.text.toLowerCase().includes(term) || card.textContent.toLowerCase().includes(term);
-        card.style.display = matchType && matchTerm ? '' : 'none';
+      const active = document.querySelector("#chips .chip.active")?.dataset.filter || "all";
+      const query = els.search.value.trim().toLowerCase();
+      els.cards.forEach(card => {
+        const matchType = active === "all" || card.dataset.type.includes(active);
+        const hay = `${card.dataset.en} ${card.dataset.ru} ${card.querySelector(".card-title").textContent} ${card.querySelector(".card-meta").textContent}`.toLowerCase();
+        const matchQuery = !query || hay.includes(query);
+        card.style.display = matchType && matchQuery ? "" : "none";
       });
     }
 
-    chips.forEach(btn => btn.addEventListener('click', () => {
-      chips.forEach(x => x.classList.remove('active'));
-      btn.classList.add('active');
-      applyFilters();
-    }));
-    search.addEventListener('input', applyFilters);
+    els.langEn.addEventListener("click", () => setLang("en"));
+    els.langRu.addEventListener("click", () => setLang("ru"));
+    els.chips.querySelectorAll(".chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        els.chips.querySelectorAll(".chip").forEach(x => x.classList.remove("active"));
+        btn.classList.add("active");
+        applyFilters();
+      });
+    });
+    els.search.addEventListener("input", applyFilters);
+    setLang("en");
   </script>
 </body>
 </html>
