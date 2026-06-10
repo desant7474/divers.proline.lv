@@ -1,0 +1,12 @@
+﻿{
+  "name": "Divers Proline LV",
+  "build": {
+    "output": "."
+  },
+  "routes": [
+    {
+      "pattern": "/*",
+      "destination": "/index.html"
+    }
+  ]
+}
